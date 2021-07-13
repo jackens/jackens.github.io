@@ -1,7 +1,4 @@
-/_icons-out
-/_icons-out/
-/_libs-out
-/_libs-out/
+/_*/
 /app-dev
 /app-dev/
 /data.js
