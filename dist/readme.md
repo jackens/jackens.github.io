@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.3.20</code></sub>
+<sub>Version: <code class="version">2024.3.25</code></sub>
 
 ## Examples
 
@@ -304,6 +304,7 @@ expect(has('key', null)).toBeFalse()
 
 ```ts
 const is: {
+    (type: ArrayConstructor, arg: any): arg is Partial<Array<any>>;
     (type: BigIntConstructor, arg: any): arg is bigint;
     (type: BooleanConstructor, arg: any): arg is boolean;
     (type: NumberConstructor, arg: any): arg is number;

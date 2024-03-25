@@ -168,8 +168,10 @@ var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
       }
       isSecondKey = true;
     }
-    if (has(key, handlers) && is(Array, value[key])) {
-      return handlers[key](...value[key]);
+    const handler = handlers[key];
+    const params = value[key];
+    if (is(Function, handler) && is(Array, params)) {
+      return handler(...params);
     }
   }
   return value;

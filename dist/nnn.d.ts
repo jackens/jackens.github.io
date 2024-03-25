@@ -84,6 +84,7 @@ export declare const has: (key: any, ref: any) => boolean;
  * A helper that checks if the given argument is of a certain type.
  */
 export declare const is: {
+    (type: ArrayConstructor, arg: any): arg is Partial<Array<any>>;
     (type: BigIntConstructor, arg: any): arg is bigint;
     (type: BooleanConstructor, arg: any): arg is boolean;
     (type: NumberConstructor, arg: any): arg is number;

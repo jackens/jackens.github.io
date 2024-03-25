@@ -47,7 +47,6 @@ const _h: {
         child = h(...arg)
       } else if (arg != null) {
         for (const name in arg) {
-          // @ts-expect-error
           const value = arg[name]
 
           if (name[0] === '$') {

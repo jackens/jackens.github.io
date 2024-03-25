@@ -4,12 +4,12 @@
     "marked": "12.0.1"
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "14.0.0",
+    "@happy-dom/global-registrator": "14.3.6",
     "@types/eslint": "8.56.6",
     "@types/web": "0.0.142",
-    "@typescript-eslint/eslint-plugin": "7.3.1",
-    "@typescript-eslint/parser": "7.3.1",
-    "bun-types": "1.0.33",
+    "@typescript-eslint/eslint-plugin": "7.4.0",
+    "@typescript-eslint/parser": "7.4.0",
+    "bun-types": "1.0.35",
     "csv-parse": "5.5.5",
     "eslint": "8.57.0",
     "eslint-config-standard": "17.1.0",
@@ -18,9 +18,9 @@
     "eslint-plugin-promise": "6.1.1",
     "globals": "14.0.0",
     "jscpd": "3.5.10",
-    "npm-check-updates": "16.14.17",
-    "puppeteer": "22.5.0",
-    "typescript": "5.4.2"
+    "npm-check-updates": "16.14.18",
+    "puppeteer": "22.6.1",
+    "typescript": "5.4.3"
   },
   "type": "module"
 }

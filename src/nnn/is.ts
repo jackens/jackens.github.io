@@ -2,6 +2,7 @@
  * A helper that checks if the given argument is of a certain type.
  */
 export const is: {
+  (type: ArrayConstructor, arg: any): arg is Partial<Array<any>>;
   (type: BigIntConstructor, arg: any): arg is bigint;
   (type: BooleanConstructor, arg: any): arg is boolean;
   (type: NumberConstructor, arg: any): arg is number;
@@ -11,7 +12,25 @@ export const is: {
   (type: undefined, arg: any): arg is undefined | null;
   <T extends abstract new (...args: Partial<Array<any>>) => any>(type: T, arg: any): arg is InstanceType<T>;
 } = <T extends abstract new (...args: Partial<Array<any>>) => any>(
-  type: BigIntConstructor | BooleanConstructor | NumberConstructor | ObjectConstructor | StringConstructor | SymbolConstructor | undefined | T,
+  type:
+    ArrayConstructor |
+    BigIntConstructor |
+    BooleanConstructor |
+    NumberConstructor |
+    ObjectConstructor |
+    StringConstructor |
+    SymbolConstructor |
+    undefined |
+    T,
   arg: any
-): arg is bigint | boolean | number | Partial<Record<PropertyKey, any>> | string | symbol | undefined | null | InstanceType<T> =>
-    arg?.constructor === type
+): arg is
+    Partial<Array<any>> |
+    bigint |
+    boolean |
+    number |
+    Partial<Record<PropertyKey, any>> |
+    string |
+    symbol |
+    undefined |
+    null |
+    InstanceType<T> => arg?.constructor === type

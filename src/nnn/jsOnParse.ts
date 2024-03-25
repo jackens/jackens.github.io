@@ -1,4 +1,3 @@
-import { has } from './has.js'
 import { is } from './is.js'
 
 /**
@@ -28,9 +27,11 @@ export const jsOnParse = (handlers: Partial<Record<PropertyKey, Function>>, text
         isSecondKey = true
       }
 
-      if (has(key, handlers) && is(Array, value[key])) {
-        // @ts-expect-error
-        return handlers[key](...value[key])
+      const handler = handlers[key]
+      const params = value[key]
+
+      if (is(Function, handler) && is(Array, params)) {
+        return handler(...params)
       }
     }
 
