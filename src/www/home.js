@@ -31,7 +31,7 @@ h(document.body,
   })],
   ['h1', 'Jackens’ Homepage'],
   location.port === '54321'
-    ? ['ul', item('./bookmarks/', 'Bookmarks'), item('./cv/', 'CV')]
+    ? ['ul', item('./bookmarks/', 'Bookmarks'), item('./_cv/', 'Curriculum Vitae')]
     : null,
   ['h2', 'nnn'],
   ['ul',
