@@ -26,7 +26,7 @@ h(document.body,
       padding: '20px'
     },
     img: {
-      margin: '20px'
+      margin: '5px 20px 15px 0'
     }
   })],
   ['h1', 'Jackens’ Homepage'],
@@ -59,11 +59,10 @@ h(document.body,
     res('Proover-dla-systemu-DEP.zip', 'proover-dla-systemu-dep.png'),
     res('plan.zip', 'plan-lekcji.png'),
     res('pots.zip',
-      'jojo.png',
       'uwolnic-orke.png', 'paulek.png',
-      'poirot.png',
-      'logic.png', 'logic-ii.png', 'logic-iii.png',
-      'demo.png',
+      'jojo.png', 'poirot.png',
+      'logic.png', 'logic-ii.png',
+      'logic-iii.png', 'demo.png',
       'zabki.png', 'zabki-ii.png',
       'logo.png', 'logo-2.png',
       'sprite-show.png', 'fonts-converter.png'),
