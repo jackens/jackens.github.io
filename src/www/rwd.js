@@ -1,4 +1,4 @@
-import { h, jc } from '../../dist/nnn.js'
+import { c, h } from '../../dist/nnn.js'
 
 document.title = 'nnn • Responsive Web Design Demo'
 
@@ -8,7 +8,7 @@ h(document.head,
 const CELL_WIDTH = 250
 const CELL_HEIGHT = 100
 
-const /** @type {import('../nnn/jc.js').JcRoot} */ root = {
+const /** @type {import('../nnn/c.js').CRoot} */ root = {
   body: {
     backgroundColor: '#222',
     margin: '5px'
@@ -45,7 +45,7 @@ const /** @type {import('../nnn/jc.js').JcRoot} */ root = {
 }
 
 for (let maxWidth = 1; maxWidth <= 10; ++maxWidth) {
-  let /** @type {import('../nnn/jc.js').JcNode} */ node
+  let /** @type {import('../nnn/c.js').CNode} */ node
 
   if (maxWidth > 1) {
     root[`@media(min-width:${CELL_WIDTH * maxWidth}px)`] = { '.rwd': (node = {}) }
@@ -98,7 +98,7 @@ const div = /** @return {import('../nnn/h.js').HArgs} */ (
 ) => ['div', { class: `rwd ${spec}` }, ...(items.length > 0 ? items : [++counter])]
 
 h(document.body,
-  ['style', jc(root)],
+  ['style', c(root)],
 
   div('c1 w-2-1 h-2-2 h-1-1'),
   div('w-2-1 h-1-2', div('c1'), div('c1')),

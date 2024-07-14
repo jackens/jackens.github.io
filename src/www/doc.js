@@ -1,6 +1,6 @@
+import { c, h, is, nanolightJs, s, svgUse } from '../../dist/nnn.js'
 // @ts-expect-error
 import { marked } from '../../node_modules/marked/lib/marked.esm.js'
-import { h, is, jc, nanolightJs, s, svgUse } from '../../dist/nnn.js'
 
 document.title = 'nnn • Documentation'
 
@@ -55,7 +55,7 @@ for (const e of div.querySelectorAll('code')) {
 }
 
 h(document.body,
-  ['style', jc({
+  ['style', c({
     body: {
       padding: '20px'
     },

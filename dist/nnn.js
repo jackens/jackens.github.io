@@ -1,3 +1,59 @@
+// src/nnn/is.ts
+var is = (type, arg) => arg?.constructor === type;
+
+// src/nnn/c.ts
+var _c = (node, prefix, result, split) => {
+  const queue = [[node, prefix]];
+  while (queue.length > 0) {
+    const [style0, prefix0] = queue.shift() ?? [];
+    if (style0 == null || prefix0 == null) {
+      continue;
+    }
+    if (is(Array, style0)) {
+      result.push(prefix0, prefix0 !== "" ? "{" : "", style0.join(";"), prefix0 !== "" ? "}" : "");
+    } else {
+      const todo = [];
+      let attributes = [];
+      let attributesPushed = false;
+      for (const key in style0) {
+        const value = style0[key];
+        if (is(String, value) || is(Number, value)) {
+          if (!attributesPushed) {
+            attributesPushed = true;
+            attributes = [];
+            todo.push([attributes, prefix0]);
+          }
+          attributes.push(`${split(key).replace(/([A-Z])/g, (_, letter) => "-" + letter.toLowerCase())}:${value}`);
+        } else if (value != null) {
+          attributesPushed = false;
+          const prefixN = [];
+          const keyChunks = key.split(",");
+          prefix0.split(",").forEach((prefixChunk) => keyChunks.forEach((keyChunk) => prefixN.push(prefixChunk + keyChunk)));
+          todo.push([value, prefixN.join(",")]);
+        }
+      }
+      queue.unshift(...todo);
+    }
+  }
+};
+var c = (root, splitter = "$$") => {
+  const split = (text) => text.split(splitter)[0];
+  const chunks = [];
+  for (const key in root) {
+    const value = root[key];
+    if (value != null) {
+      if (key[0] === "@") {
+        chunks.push(split(key) + "{");
+        _c(value, "", chunks, split);
+        chunks.push("}");
+      } else {
+        _c(value, split(key), chunks, split);
+      }
+    }
+  }
+  return chunks.join("");
+};
+
 // src/nnn/csvParse.ts
 var csvParse = (text, { header = true, separator = "," } = {}) => {
   const regExp = new RegExp(`${separator}|(?<!")\\s*"((?:[^"]|"")*)"\\s*(?!")`, "g");
@@ -15,9 +71,6 @@ var csvParse = (text, { header = true, separator = "," } = {}) => {
 // src/nnn/escape.ts
 var escapeValues = (escapeMap, values) => values.map((value) => (escapeMap.get(value?.constructor) ?? escapeMap.get(undefined))?.(value) ?? "");
 var escape = (escapeMap, template, ...values) => String.raw(template, ...escapeValues(escapeMap, values));
-
-// src/nnn/is.ts
-var is = (type, arg) => arg?.constructor === type;
 
 // src/nnn/h.ts
 var NS = {
@@ -118,59 +171,6 @@ var fixTypography = (node) => {
 
 // src/nnn/has.ts
 var has = (key, ref) => (is(String, key) || is(Number, key) || is(Symbol, key)) && Object.hasOwnProperty.call(ref ?? Object, key);
-
-// src/nnn/jc.ts
-var _jc = (node, prefix, result, split) => {
-  const queue = [[node, prefix]];
-  while (queue.length > 0) {
-    const [style0, prefix0] = queue.shift() ?? [];
-    if (style0 == null || prefix0 == null) {
-      continue;
-    }
-    if (is(Array, style0)) {
-      result.push(prefix0, prefix0 !== "" ? "{" : "", style0.join(";"), prefix0 !== "" ? "}" : "");
-    } else {
-      const todo = [];
-      let attributes = [];
-      let attributesPushed = false;
-      for (const key in style0) {
-        const value = style0[key];
-        if (is(String, value) || is(Number, value)) {
-          if (!attributesPushed) {
-            attributesPushed = true;
-            attributes = [];
-            todo.push([attributes, prefix0]);
-          }
-          attributes.push(`${split(key).replace(/([A-Z])/g, (_, letter) => "-" + letter.toLowerCase())}:${value}`);
-        } else if (value != null) {
-          attributesPushed = false;
-          const prefixN = [];
-          const keyChunks = key.split(",");
-          prefix0.split(",").forEach((prefixChunk) => keyChunks.forEach((keyChunk) => prefixN.push(prefixChunk + keyChunk)));
-          todo.push([value, prefixN.join(",")]);
-        }
-      }
-      queue.unshift(...todo);
-    }
-  }
-};
-var jc = (root, splitter = "$$") => {
-  const split = (text) => text.split(splitter)[0];
-  const chunks = [];
-  for (const key in root) {
-    const value = root[key];
-    if (value != null) {
-      if (key[0] === "@") {
-        chunks.push(split(key) + "{");
-        _jc(value, "", chunks, split);
-        chunks.push("}");
-      } else {
-        _jc(value, split(key), chunks, split);
-      }
-    }
-  }
-  return chunks.join("");
-};
 
 // src/nnn/jsOnParse.ts
 var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
@@ -280,12 +280,12 @@ export {
   nanolight,
   locale,
   jsOnParse,
-  jc,
   is,
   has,
   h,
   fixTypography,
   escapeValues,
   escape,
-  csvParse
+  csvParse,
+  c
 };

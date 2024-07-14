@@ -1,4 +1,4 @@
-import { h, jc, s } from '../../dist/nnn.js'
+import { c, h, s } from '../../dist/nnn.js'
 
 document.title = 'nnn • Gantt Chart Demo'
 
@@ -154,7 +154,7 @@ tasks.forEach((/** @type {Required<Task>} */ task, t) => {
 const href = 'https://en.wikipedia.org/wiki/Gantt_chart#Example'
 
 h(document.body,
-  ['style', jc({
+  ['style', c({
     body: { padding: '20px' }
   })],
   ['h1', 'Gantt chart'],

@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.7.13</code></sub>
+<sub>Version: <code class="version">2024.7.14</code></sub>
 
 ## Installation
 
@@ -31,24 +31,24 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.13/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.14/nnn.js'
 ```
 
 ## Exports
 
+- `CNode`: The type of arguments of the `c` helper.
+- `CRoot`: The type of arguments of the `c` helper.
 - `EscapeMap`: The type of arguments of the `escapeValues` and `escape` helpers.
 - `HArgs`: The type of arguments of the `h` and `s` helpers.
 - `HArgs1`: The type of arguments of the `h` and `s` helpers.
-- `JcNode`: The type of arguments of the `jc` helper.
-- `JcRoot`: The type of arguments of the `jc` helper.
+- `c`: A simple JS-to-CSS (aka CSS-in-JS) helper.
 - `csvParse`: A tiny helper for CSV parsing.
 - `escape`: A generic helper for escaping `values` by given `escapeMap` (in *TemplateStrings* flavor).
 - `escapeValues`: A generic helper for escaping `values` by given `escapeMap`.
 - `fixTypography`: A helper that implements typographic corrections specific to Polish typography.
-- `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
+- `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
 - `has`: A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
 - `is`: A helper that checks if the given argument is of a certain type.
-- `jc`: A simple JS-to-CSS (aka CSS-in-JS) helper.
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
 - `locale`: Language translations helper.
 - `nanolight`: A generic helper for syntax highlighting (see also `nanolightJs`).
@@ -56,11 +56,29 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.13/nnn.js'
 - `omit`: A helper that implements TypeScript’s `Omit` utility type.
 - `pick`: A helper that implements TypeScript’s `Pick` utility type.
 - `plUral`: A helper for choosing the correct singular and plural.
-- `pro`: A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty object.
+- `pro`: A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty
 - `refsInfo`: A helper that provides information about the given `refs`.
-- `s`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `SVGElement`s (see also `h`).
+- `s`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
 - `svgUse`: A convenient shortcut for `s('svg', ['use', { 'xlink:href': '#' + id }], ...args)`.
 - `uuid1`: A helper that generates a UUID v1 identifier (with a creation timestamp).
+
+### CNode
+
+```ts
+type CNode = {
+    [attributeOrSelector: string]: string | number | CNode | undefined;
+};
+```
+
+The type of arguments of the `c` helper.
+
+### CRoot
+
+```ts
+type CRoot = Partial<Record<PropertyKey, CNode>>;
+```
+
+The type of arguments of the `c` helper.
 
 ### EscapeMap
 
@@ -86,23 +104,221 @@ type HArgs1 = Partial<Record<PropertyKey, unknown>> | null | undefined | Node | 
 
 The type of arguments of the `h` and `s` helpers.
 
-### JcNode
+### c
 
 ```ts
-type JcNode = {
-    [attributeOrSelector: string]: string | number | JcNode | undefined;
-};
+const c: (root: CRoot, splitter?: string) => string;
 ```
 
-The type of arguments of the `jc` helper.
+A simple JS-to-CSS (aka CSS-in-JS) helper.
 
-### JcRoot
+The `root` parameter provides a hierarchical description of CSS rules.
 
-```ts
-type JcRoot = Partial<Record<PropertyKey, JcNode>>;
+- Keys of sub-objects whose values are NOT objects are treated as CSS attribute, and values are treated as values of
+  those CSS attributes; the concatenation of keys of all parent objects is a CSS rule.
+- All keys ignore the part starting with a splitter (default: `$$`) sign until the end of the key (e.g. `src$$1` →
+  `src`, `@font-face$$1` → `@font-face`).
+- In keys specifying CSS attribute, all uppercase letters are replaced by lowercase letters with an additional `-`
+  character preceding them (e.g. `fontFamily` → `font-family`).
+- Commas in keys that makes a CSS rule cause it to “split” and create separate rules for each part (e.g.
+  `{div:{margin:1,'.a,.b,.c':{margin:2}}}` → `div{margin:1}div.a,div.b,div.c{margin:2}`).
+- Top-level keys that begin with `@` are not concatenated with sub-object keys.
+
+#### Usage Examples
+
+```js
+const actual = c({
+  a: {
+    color: 'red',
+    margin: 1,
+    '.c': { margin: 2, padding: 2 },
+    padding: 1
+  }
+})
+
+const expected = `
+a{
+  color:red;
+  margin:1
+}
+a.c{
+  margin:2;
+  padding:2
+}
+a{
+  padding:1
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
 ```
 
-The type of arguments of the `jc` helper.
+```js
+const actual = c({
+  a: {
+    '.b': {
+      color: 'red',
+      margin: 1,
+      '.c': { margin: 2, padding: 2 },
+      padding: 1
+    }
+  }
+})
+
+const expected = `
+a.b{
+  color:red;
+  margin:1
+}
+a.b.c{
+  margin:2;
+  padding:2
+}
+a.b{
+  padding:1
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
+```
+
+```js
+const actual = c({
+  '@font-face$$1': {
+    fontFamily: 'Jackens',
+    src$$1: 'url(otf/jackens.otf)',
+    src$$2: "url(otf/jackens.otf) format('opentype')," +
+      "url(svg/jackens.svg) format('svg')",
+    fontWeight: 'normal',
+    fontStyle: 'normal'
+  },
+  '@font-face$$2': {
+    fontFamily: 'C64',
+    src: 'url(fonts/C64_Pro_Mono-STYLE.woff)'
+  },
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' }
+  },
+  div: {
+    border: 'solid red 1px',
+    '.c1': { 'background-color': '#000' },
+    ' .c1': { backgroundColor: 'black' },
+    '.c2': { backgroundColor: 'rgb(0,0,0)' }
+  },
+  '@media(min-width:200px)': {
+    div: { margin: 0, padding: 0 },
+    span: { color: '#000' }
+  }
+})
+
+const expected = `
+@font-face{
+  font-family:Jackens;
+  src:url(otf/jackens.otf);
+  src:url(otf/jackens.otf) format('opentype'),url(svg/jackens.svg) format('svg');
+  font-weight:normal;
+  font-style:normal
+}
+@font-face{
+  font-family:C64;
+  src:url(fonts/C64_Pro_Mono-STYLE.woff)
+}
+@keyframes spin{
+  0%{
+    transform:rotate(0deg)
+  }
+  100%{
+    transform:rotate(360deg)
+  }
+}
+div{
+  border:solid red 1px
+}
+div.c1{
+  background-color:#000
+}
+div .c1{
+  background-color:black
+}
+div.c2{
+  background-color:rgb(0,0,0)
+}
+@media(min-width:200px){
+  div{
+    margin:0;
+    padding:0
+  }
+  span{
+    color:#000
+  }
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
+```
+
+```js
+const actual = c({
+  a: {
+    '.b,.c': {
+      margin: 1,
+      '.d': {
+        margin: 2
+      }
+    }
+  }
+})
+
+const expected = `
+a.b,a.c{
+  margin:1
+}
+a.b.d,a.c.d{
+  margin:2
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
+```
+
+```js
+const actual = c({
+  '.b,.c': {
+    margin: 1,
+    '.d': {
+      margin: 2
+    }
+  }
+})
+
+const expected = `
+.b,.c{
+  margin:1
+}
+.b.d,.c.d{
+  margin:2
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
+```
+
+```js
+const actual = c({
+  '.a,.b': {
+    margin: 1,
+    '.c,.d': {
+      margin: 2
+    }
+  }
+})
+
+const expected = `
+.a,.b{
+  margin:1
+}
+.a.c,.a.d,.b.c,.b.d{
+  margin:2
+}`.replace(/\n\s*/g, '')
+
+expect(actual).to.deep.equal(expected)
+```
 
 ### csvParse
 
@@ -220,19 +436,21 @@ const h: {
 };
 ```
 
-A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
+A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
+`HTMLElement`s (see also `s`).
 
 - The first argument of type `string` specifies the tag of the element to be created.
 - The first argument of type `Node` specifies the element to be modified.
 - All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties.
-  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or modified.
-  (Note that `$` is not a valid attribute name character.)
-  All other keys specify *attributes* to be set by `setAttribute`.
-  An attribute equal to `false` causes the attribute to be removed by `removeAttribute`.
+  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or
+  modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by
+  `setAttribute`. An attribute equal to `false` causes the attribute to be removed by `removeAttribute`.
 - All other arguments of type `null` or `undefined` are simply ignored.
 - All other arguments of type `Node` are appended to the element being created or modified.
-- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being created or modified.
-- All other arguments of type `HArgs` are passed to `h` and the results are appended to the element being created or modified.
+- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being
+  created or modified.
+- All other arguments of type `HArgs` are passed to `h` and the results are appended to the element being created or
+  modified.
 
 #### Usage Examples
 
@@ -417,218 +635,6 @@ try {
 } catch { /* empty */ }
 
 expect(is(Number, num)).to.be.true
-```
-
-### jc
-
-```ts
-const jc: (root: JcRoot, splitter?: string) => string;
-```
-
-A simple JS-to-CSS (aka CSS-in-JS) helper.
-
-The `root` parameter provides a hierarchical description of CSS rules.
-
-- Keys of sub-objects whose values are NOT objects are treated as CSS attribute, and values are treated as values of those CSS attributes; the concatenation of keys of all parent objects is a CSS rule.
-- All keys ignore the part starting with a splitter (default: `$$`) sign until the end of the key (e.g. `src$$1` → `src`, `@font-face$$1` → `@font-face`).
-- In keys specifying CSS attribute, all uppercase letters are replaced by lowercase letters with an additional `-` character preceding them (e.g. `fontFamily` → `font-family`).
-- Commas in keys that makes a CSS rule cause it to “split” and create separate rules for each part (e.g. `{div:{margin:1,'.a,.b,.c':{margin:2}}}` → `div{margin:1}div.a,div.b,div.c{margin:2}`).
-- Top-level keys that begin with `@` are not concatenated with sub-object keys.
-
-#### Usage Examples
-
-```js
-const actual = jc({
-  a: {
-    color: 'red',
-    margin: 1,
-    '.c': { margin: 2, padding: 2 },
-    padding: 1
-  }
-})
-
-const expected = `
-a{
-  color:red;
-  margin:1
-}
-a.c{
-  margin:2;
-  padding:2
-}
-a{
-  padding:1
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
-```
-
-```js
-const actual = jc({
-  a: {
-    '.b': {
-      color: 'red',
-      margin: 1,
-      '.c': { margin: 2, padding: 2 },
-      padding: 1
-    }
-  }
-})
-
-const expected = `
-a.b{
-  color:red;
-  margin:1
-}
-a.b.c{
-  margin:2;
-  padding:2
-}
-a.b{
-  padding:1
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
-```
-
-```js
-const actual = jc({
-  '@font-face$$1': {
-    fontFamily: 'Jackens',
-    src$$1: 'url(otf/jackens.otf)',
-    src$$2: "url(otf/jackens.otf) format('opentype')," +
-      "url(svg/jackens.svg) format('svg')",
-    fontWeight: 'normal',
-    fontStyle: 'normal'
-  },
-  '@font-face$$2': {
-    fontFamily: 'C64',
-    src: 'url(fonts/C64_Pro_Mono-STYLE.woff)'
-  },
-  '@keyframes spin': {
-    '0%': { transform: 'rotate(0deg)' },
-    '100%': { transform: 'rotate(360deg)' }
-  },
-  div: {
-    border: 'solid red 1px',
-    '.c1': { 'background-color': '#000' },
-    ' .c1': { backgroundColor: 'black' },
-    '.c2': { backgroundColor: 'rgb(0,0,0)' }
-  },
-  '@media(min-width:200px)': {
-    div: { margin: 0, padding: 0 },
-    span: { color: '#000' }
-  }
-})
-
-const expected = `
-@font-face{
-  font-family:Jackens;
-  src:url(otf/jackens.otf);
-  src:url(otf/jackens.otf) format('opentype'),url(svg/jackens.svg) format('svg');
-  font-weight:normal;
-  font-style:normal
-}
-@font-face{
-  font-family:C64;
-  src:url(fonts/C64_Pro_Mono-STYLE.woff)
-}
-@keyframes spin{
-  0%{
-    transform:rotate(0deg)
-  }
-  100%{
-    transform:rotate(360deg)
-  }
-}
-div{
-  border:solid red 1px
-}
-div.c1{
-  background-color:#000
-}
-div .c1{
-  background-color:black
-}
-div.c2{
-  background-color:rgb(0,0,0)
-}
-@media(min-width:200px){
-  div{
-    margin:0;
-    padding:0
-  }
-  span{
-    color:#000
-  }
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
-```
-
-```js
-const actual = jc({
-  a: {
-    '.b,.c': {
-      margin: 1,
-      '.d': {
-        margin: 2
-      }
-    }
-  }
-})
-
-const expected = `
-a.b,a.c{
-  margin:1
-}
-a.b.d,a.c.d{
-  margin:2
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
-```
-
-```js
-const actual = jc({
-  '.b,.c': {
-    margin: 1,
-    '.d': {
-      margin: 2
-    }
-  }
-})
-
-const expected = `
-.b,.c{
-  margin:1
-}
-.b.d,.c.d{
-  margin:2
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
-```
-
-```js
-const actual = jc({
-  '.a,.b': {
-    margin: 1,
-    '.c,.d': {
-      margin: 2
-    }
-  }
-})
-
-const expected = `
-.a,.b{
-  margin:1
-}
-.a.c,.a.d,.b.c,.b.d{
-  margin:2
-}`.replace(/\n\s*/g, '')
-
-expect(actual).to.deep.equal(expected)
 ```
 
 ### jsOnParse
@@ -824,7 +830,8 @@ expect(car(42)).to.deep.equal('cars')
 const pro: (ref: unknown) => any;
 ```
 
-A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty object.
+A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty
+object.
 
 #### Usage Examples
 
@@ -909,19 +916,21 @@ const s: {
 };
 ```
 
-A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `SVGElement`s (see also `h`).
+A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
+`SVGElement`s (see also `h`).
 
 - The first argument of type `string` specifies the tag of the element to be created.
 - The first argument of type `Node` specifies the element to be modified.
 - All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties.
-  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or modified.
-  (Note that `$` is not a valid attribute name character.)
-  All other keys specify *attributes* to be set by `setAttributeNS`.
-  An attribute equal to `false` causes the attribute to be removed by `removeAttributeNS`.
+  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or
+  modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by
+  `setAttributeNS`. An attribute equal to `false` causes the attribute to be removed by `removeAttributeNS`.
 - All other arguments of type `null` or `undefined` are simply ignored.
 - All other arguments of type `Node` are appended to the element being created or modified.
-- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being created or modified.
-- All other arguments of type `HArgs` are passed to `s` and the results are appended to the element being created or modified.
+- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being
+  created or modified.
+- All other arguments of type `HArgs` are passed to `s` and the results are appended to the element being created or
+  modified.
 
 ### svgUse
 

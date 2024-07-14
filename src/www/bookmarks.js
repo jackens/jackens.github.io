@@ -1,4 +1,4 @@
-import { h, jc } from '../../dist/nnn.js'
+import { c, h } from '../../dist/nnn.js'
 
 document.title = 'Bookmarks'
 
@@ -14,7 +14,7 @@ const /** @type {Partial<Array<import('../nnn/h.js').HArgs>>} */ items =
   })
 
 h(document.body,
-  ['style', jc({
+  ['style', c({
     body: {
       padding: '20px'
     }

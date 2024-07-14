@@ -1,4 +1,4 @@
-import { h, jc } from '../../dist/nnn.js'
+import { c, h } from '../../dist/nnn.js'
 
 document.title = 'Jackens’ Homepage'
 
@@ -21,7 +21,7 @@ const res = (
 ) => item(`./res/${text}`, text, ...imgs)
 
 h(document.body,
-  ['style', jc({
+  ['style', c({
     body: {
       padding: '20px'
     },
@@ -40,7 +40,7 @@ h(document.body,
     item('./nnn/chessboard/', 'Chessboard Demo'),
     item('./nnn/gantt/', 'Gantt Chart Demo'),
     item('./nnn/rwd/', 'Responsive Web Design Demo')],
-  ['h2', 'PDF'],
+  ['h2', 'Archive PDFs'],
   ['ul',
     res('Comparison-of-the-Exact-and-Approximate-Algorithms-in-the-Random-Shortest-Path-Problem.pdf'),
     res('Grid-Typesetting-with-Inserts-Omission.pdf'),
@@ -50,7 +50,7 @@ h(document.body,
     res('Raporty-TeX-owe.pdf'),
     res('Reports-Using-TeX.pdf'),
     res('Rodziny-rownowazne-z-bazodanowa-rodzina-relacji.pdf')],
-  ['h2', 'ZIP'],
+  ['h2', 'Archive ZIPs'],
   ['ul',
     res('FROGYS.zip', 'frogys.png'),
     res('GOMOKU.zip', 'gomoku.png', 'gomoku-sexy.png'),

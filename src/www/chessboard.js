@@ -1,4 +1,4 @@
-import { h, jc, s, svgUse } from '../../dist/nnn.js'
+import { c, h, s, svgUse } from '../../dist/nnn.js'
 import { bB, bK, bN, bP, bQ, bR, wB, wK, wN, wP, wQ, wR } from './alpha.js'
 
 document.title = 'nnn • Chessboard Demo'
@@ -21,7 +21,7 @@ const cell = (/** @type {string?=} */ id) => {
 }
 
 h(document.body,
-  ['style', jc({
+  ['style', c({
     div: { display: 'none' },
     svg: { height: '12.5vmin', width: '12.5vmin', position: 'absolute' }
   })],
