@@ -31,25 +31,29 @@ Array.from(div.querySelectorAll('h1,h2,h3,h4')).forEach((
   h(e, ['a', { href: '#' + name }, svgUse('link')])
 })
 
-const ARG_IS = JSON.stringify([['span', { class: 'literal' }, 'arg'], ' ', ['span', { class: 'keyword' }, 'is']])
-const SLASH_S = JSON.stringify(['\\', ['span', { class: 'literal' }, 's']])
+const CONST = JSON.stringify([['span', { class: 'keyword' }, 'const'], ' '])
 
 for (const e of div.querySelectorAll('code')) {
   if (['', 'language-js', 'language-ts'].includes(e.className)) {
     const code = e.innerText
 
-    h(e, { $innerText: '' }, ...nanolightJs(code).map((e2, i, e2Arr) => {
-      if (is(Array, e2) &&
-          JSON.stringify(e2Arr.slice(i - 2, i + 1)) !== ARG_IS &&
-          JSON.stringify(e2Arr.slice(i - 1, i + 1)) !== SLASH_S) {
-        const name = e2[2]
+    h(e, { $innerText: '' }, ...nanolightJs(code).map((eI, i, eArr) => {
+      if (is(Array, eI)) {
+        const [, attributes, name] = eI
 
-        if (is(String, name) && names.includes(name)) {
-          e2[2] = ['a', { href: '#' + name }, name]
+        if (is(String, name) && names.includes(name) && is(Object, attributes)) {
+          const { class: cls } = attributes
+          const next1 = JSON.stringify(eArr[i + 1])
+          const prev2 = JSON.stringify(eArr.slice(i - 2, i))
+
+          if (is(String, cls) && ['function', 'keyword', 'literal'].includes(cls) &&
+            (name.length > 2 || next1 == null || next1.startsWith('"(') || prev2 === CONST)) {
+            eI[2] = ['a', { href: '#' + name }, name]
+          }
         }
       }
 
-      return e2
+      return eI
     }))
   }
 }
