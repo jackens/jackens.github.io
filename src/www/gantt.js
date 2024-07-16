@@ -3,7 +3,7 @@ import { c, h, s } from '../../dist/nnn.js'
 document.title = 'nnn • Gantt Chart Demo'
 
 h(document.head,
-  ['link', { rel: 'stylesheet', href: '../../node_modules/@picocss/pico/css/pico.min.css' }])
+  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 const PIXELS_PER_DAY = 42

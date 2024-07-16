@@ -3,7 +3,7 @@ import { c, h } from '../../dist/nnn.js'
 document.title = 'Bookmarks'
 
 h(document.head,
-  ['link', { rel: 'stylesheet', href: '../../node_modules/@picocss/pico/css/pico.min.css' }])
+  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
 
 const a = /** @returns {import('../../dist/nnn.js').HArgs} */ (
   /** @type {string} */ text, /** @type {string} */ href
