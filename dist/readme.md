@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.7.14</code></sub>
+<sub>Version: <code class="version">2024.7.18</code></sub>
 
 ## Installation
 
@@ -31,7 +31,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.14/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.18/nnn.js'
 ```
 
 ## Exports
@@ -46,7 +46,7 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.14/nnn.js'
 - `escape`: A generic helper for escaping `values` by given `escapeMap` (in *TemplateStrings* flavor).
 - `escapeValues`: A generic helper for escaping `values` by given `escapeMap`.
 - `fixTypography`: A helper that implements typographic corrections specific to Polish typography.
-- `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
+- `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
 - `has`: A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
 - `is`: A helper that checks if the given argument is of a certain type.
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
@@ -58,7 +58,7 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.14/nnn.js'
 - `plUral`: A helper for choosing the correct singular and plural.
 - `pro`: A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty
 - `refsInfo`: A helper that provides information about the given `refs`.
-- `s`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
+- `s`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `SVGElement`s (see also `h`).
 - `svgUse`: A convenient shortcut for `s('svg', ['use', { 'xlink:href': '#' + id }], ...args)`.
 - `uuid1`: A helper that generates a UUID v1 identifier (with a creation timestamp).
 
@@ -114,14 +114,10 @@ A simple JS-to-CSS (aka CSS-in-JS) helper.
 
 The `root` parameter provides a hierarchical description of CSS rules.
 
-- Keys of sub-objects whose values are NOT objects are treated as CSS attribute, and values are treated as values of
-  those CSS attributes; the concatenation of keys of all parent objects is a CSS rule.
-- All keys ignore the part starting with a splitter (default: `$$`) sign until the end of the key (e.g. `src$$1` →
-  `src`, `@font-face$$1` → `@font-face`).
-- In keys specifying CSS attribute, all uppercase letters are replaced by lowercase letters with an additional `-`
-  character preceding them (e.g. `fontFamily` → `font-family`).
-- Commas in keys that makes a CSS rule cause it to “split” and create separate rules for each part (e.g.
-  `{div:{margin:1,'.a,.b,.c':{margin:2}}}` → `div{margin:1}div.a,div.b,div.c{margin:2}`).
+- Keys of sub-objects whose values are NOT objects are treated as CSS attribute, and values are treated as values of those CSS attributes; the concatenation of keys of all parent objects is a CSS rule.
+- All keys ignore the part starting with a splitter (default: `$$`) sign until the end of the key (e.g. `src$$1` → `src`, `@font-face$$1` → `@font-face`).
+- In keys specifying CSS attribute, all uppercase letters are replaced by lowercase letters with an additional `-` character preceding them (e.g. `fontFamily` → `font-family`).
+- Commas in keys that makes a CSS rule cause it to “split” and create separate rules for each part (e.g. `{div:{margin:1,'.a,.b,.c':{margin:2}}}` → `div{margin:1}div.a,div.b,div.c{margin:2}`).
 - Top-level keys that begin with `@` are not concatenated with sub-object keys.
 
 #### Usage Examples
@@ -436,21 +432,15 @@ const h: {
 };
 ```
 
-A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
-`HTMLElement`s (see also `s`).
+A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
 
 - The first argument of type `string` specifies the tag of the element to be created.
 - The first argument of type `Node` specifies the element to be modified.
-- All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties.
-  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or
-  modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by
-  `setAttribute`. An attribute equal to `false` causes the attribute to be removed by `removeAttribute`.
+- All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties. Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by `setAttribute`. An attribute equal to `false` causes the attribute to be removed by `removeAttribute`.
 - All other arguments of type `null` or `undefined` are simply ignored.
 - All other arguments of type `Node` are appended to the element being created or modified.
-- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being
-  created or modified.
-- All other arguments of type `HArgs` are passed to `h` and the results are appended to the element being created or
-  modified.
+- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being created or modified.
+- All other arguments of type `HArgs` are passed to `h` and the results are appended to the element being created or modified.
 
 #### Usage Examples
 
@@ -916,21 +906,15 @@ const s: {
 };
 ```
 
-A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying
-`SVGElement`s (see also `h`).
+A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `SVGElement`s (see also `h`).
 
 - The first argument of type `string` specifies the tag of the element to be created.
 - The first argument of type `Node` specifies the element to be modified.
-- All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties.
-  Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or
-  modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by
-  `setAttributeNS`. An attribute equal to `false` causes the attribute to be removed by `removeAttributeNS`.
+- All other arguments of type `Partial<Record<PropertyKey, unknown>>` are mappings of attributes and properties. Keys starting with `$` specify *properties* (without the leading `$`) to be set on the element being created or modified. (Note that `$` is not a valid attribute name character.) All other keys specify *attributes* to be set by `setAttributeNS`. An attribute equal to `false` causes the attribute to be removed by `removeAttributeNS`.
 - All other arguments of type `null` or `undefined` are simply ignored.
 - All other arguments of type `Node` are appended to the element being created or modified.
-- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being
-  created or modified.
-- All other arguments of type `HArgs` are passed to `s` and the results are appended to the element being created or
-  modified.
+- All other arguments of type `string`/`number` are converted to `Text` nodes and appended to the element being created or modified.
+- All other arguments of type `HArgs` are passed to `s` and the results are appended to the element being created or modified.
 
 ### svgUse
 
@@ -951,8 +935,7 @@ const uuid1: ({ date, node }?: {
 
 A helper that generates a UUID v1 identifier (with a creation timestamp).
 
-- The optional `node` parameter should have the format `/^[0123456789abcdef]+$/`.
-  Its value will be trimmed to last 12 characters and left padded with zeros.
+- The optional `node` parameter should have the format `/^[0123456789abcdef]+$/`. Its value will be trimmed to last 12 characters and left padded with zeros.
 
 #### Usage Examples
 
