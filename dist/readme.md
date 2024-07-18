@@ -4,6 +4,12 @@ Jackens’ JavaScript helpers.
 
 <sub>Version: <code class="version">2024.7.18</code></sub>
 
+* [Documentation](https://jackens.github.io/nnn/doc/)
+* [Tests](https://jackens.github.io/nnn/test/)
+* [Chessboard Demo](https://jackens.github.io/nnn/chessboard/)
+* [Gantt Chart Demo](https://jackens.github.io/nnn/gantt/)
+* [Responsive Web Design Demo](https://jackens.github.io/nnn/rwd/)
+
 ## Installation
 
 ```sh
