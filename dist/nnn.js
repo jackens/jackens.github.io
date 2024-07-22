@@ -184,7 +184,7 @@ var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
     }
     const handler = handlers[key];
     const params = value[key];
-    if (is(Function, handler) && is(Array, params)) {
+    if (handler instanceof Function && is(Array, params)) {
       return handler(...params);
     }
   }
@@ -244,9 +244,12 @@ var pro = (ref) => new Proxy(ref, {
 var refsInfo = (...refs) => {
   const fns = new Set;
   refs.forEach((ref) => {
-    while (is(Function, ref) && !fns.has(ref) && `${ref}`.includes("[native code]")) {
-      fns.add(ref);
-      ref = Object.getPrototypeOf(ref);
+    try {
+      while (ref instanceof Function && !fns.has(ref) && `${ref}`.match(/function\s+\w+[\s\S]+\[native code\]/)) {
+        fns.add(ref);
+        ref = Object.getPrototypeOf(ref);
+      }
+    } catch {
     }
   });
   return Array.from(fns.values()).map((fn) => [

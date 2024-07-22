@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.7.18</code></sub>
+<sub>Version: <code class="version">2024.7.22</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.18/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.22/nnn.js'
 ```
 
 ## Exports
