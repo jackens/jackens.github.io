@@ -28,7 +28,6 @@ h(document.body,
     a('GitHub • Trending Zig', 'https://github.com/trending/zig')
   ],
   ['ul',
-    a('App Sliced', 'https://appsliced.co/apps/iphone?sort=latest&threshold=all&l=nav'),
     a('PS Deals', 'https://psdeals.net/pl-store'),
     a('Apple • Report a Problem', 'https://reportaproblem.apple.com/'),
     a('YouTube • Andrzej Dragan', 'https://m.youtube.com/results?sp=mAEA&search_query=andrzej+dragan')
