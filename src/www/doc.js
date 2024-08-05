@@ -4,9 +4,6 @@ import { marked } from '../../node_modules/marked/lib/marked.esm.js'
 
 document.title = 'nnn • Documentation'
 
-h(document.head,
-  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
-
 const /** @type {Partial<Array<string>>} */ names = []
 const res = await fetch('/dist/readme.md')
 const md = await res.text()

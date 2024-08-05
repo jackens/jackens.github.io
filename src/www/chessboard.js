@@ -3,9 +3,6 @@ import { bB, bK, bN, bP, bQ, bR, wB, wK, wN, wP, wQ, wR } from './alpha.js'
 
 document.title = 'nnn • Chessboard Demo'
 
-h(document.head,
-  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
-
 let counter = -1
 
 const cell = (/** @type {string?=} */ id) => {

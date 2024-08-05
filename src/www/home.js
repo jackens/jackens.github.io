@@ -2,9 +2,6 @@ import { c, h } from '../../dist/nnn.js'
 
 document.title = 'Jackens’ Homepage'
 
-h(document.head,
-  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
-
 const item = /** @returns {import('../../dist/nnn.js').HArgs} */ (
   /** @type {string}   */ href,
   /** @type {string}   */ text,
@@ -31,15 +28,15 @@ h(document.body,
   })],
   ['h1', 'Jackens’ Homepage'],
   location.port === '54321'
-    ? ['ul', item('./bookmarks/', 'Bookmarks'), item('./_cv/', 'Curriculum Vitae')]
+    ? ['ul', item('/bookmarks/', 'Bookmarks'), item('/_cv/', 'Curriculum Vitae')]
     : null,
   ['h2', 'nnn'],
   ['ul',
-    item('./nnn/doc/', 'Documentation'),
-    item('./nnn/test/', 'Tests'),
-    item('./nnn/chessboard/', 'Chessboard Demo'),
-    item('./nnn/rwd/', 'Responsive Web Design Demo'),
-    item('./nnn/gantt/', 'Gantt Chart Demo')],
+    item('/nnn/doc/', 'Documentation'),
+    item('/nnn/test/', 'Tests'),
+    item('/nnn/chessboard/', 'Chessboard Demo'),
+    item('/nnn/rwd/', 'Responsive Web Design Demo'),
+    item('/nnn/gantt/', 'Gantt Chart Demo')],
   ['h2', 'Archive PDFs'],
   ['ul',
     res('Comparison-of-the-Exact-and-Approximate-Algorithms-in-the-Random-Shortest-Path-Problem.pdf'),

@@ -2,9 +2,6 @@ import { c, h } from '../../dist/nnn.js'
 
 document.title = 'nnn • Responsive Web Design Demo'
 
-h(document.head,
-  ['link', { rel: 'stylesheet', href: '/node_modules/@picocss/pico/css/pico.min.css' }])
-
 const CELL_WIDTH = 250
 const CELL_HEIGHT = 100
 
