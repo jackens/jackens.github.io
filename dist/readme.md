@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.7.22</code></sub>
+<sub>Version: <code class="version">2024.8.6</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.22/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.8.6/nnn.js'
 ```
 
 ## Exports
@@ -58,9 +58,9 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.7.22/nnn.js'
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
 - `locale`: Language translations helper.
 - `nanolight`: A generic helper for syntax highlighting (see also `nanolightJs`).
-- `nanolightJs`: A helper for highlighting JavaScript.
-- `omit`: A helper that implements TypeScript’s `Omit` utility type.
-- `pick`: A helper that implements TypeScript’s `Pick` utility type.
+- `nanolightJs`: A helper for highlighting JavaScript (see also `nanolight`).
+- `omit`: A helper that implements TypeScript’s `Omit` utility type (see also `pick`).
+- `pick`: A helper that implements TypeScript’s `Pick` utility type (see also `omit`).
 - `plUral`: A helper for choosing the correct singular and plural.
 - `pro`: A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty
 - `refsInfo`: A helper that provides information about the given `refs`.
@@ -744,7 +744,7 @@ A generic helper for syntax highlighting (see also `nanolightJs`).
 const nanolightJs: (code: string) => HArgs1[];
 ```
 
-A helper for highlighting JavaScript.
+A helper for highlighting JavaScript (see also `nanolight`).
 
 #### Usage Examples
 
@@ -768,7 +768,7 @@ expect(nanolightJs(codeJs)).to.deep.equal([
 const omit: <T extends Partial<Record<PropertyKey, unknown>>, K extends Array<keyof T>>(obj: Partial<Record<PropertyKey, unknown>>, keys: Partial<Array<unknown>>) => Omit<T, K[number]>;
 ```
 
-A helper that implements TypeScript’s `Omit` utility type.
+A helper that implements TypeScript’s `Omit` utility type (see also `pick`).
 
 #### Usage Examples
 
@@ -784,7 +784,7 @@ expect(omit(obj, ['c'])).to.deep.equal({ a: 42, b: '42' })
 const pick: <T extends Partial<Record<PropertyKey, unknown>>, K extends Array<keyof T>>(obj: Partial<Record<PropertyKey, unknown>>, keys: Partial<Array<unknown>>) => Pick<T, K[number]>;
 ```
 
-A helper that implements TypeScript’s `Pick` utility type.
+A helper that implements TypeScript’s `Pick` utility type (see also `omit`).
 
 #### Usage Examples
 
