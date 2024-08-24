@@ -55,18 +55,19 @@ var c = (root, splitter = "$$") => {
 };
 
 // src/nnn/csvParse.ts
-var csvParse = (text, { header = true, separator = "," } = {}) => {
+var _csvParseHeaderFalse = (text, separator) => {
   const regExp = new RegExp(`${separator}|(?<!")\\s*"((?:[^"]|"")*)"\\s*(?!")`, "g");
-  const rows = text.replace(/\r/g, "").replace(/\n+$/, "").replace(/\n|(?<!")("(?:[^"]|"")*")(?!")/g, (_, chunk) => chunk ?? "\r").split("\r").map((line) => line.replace(regExp, (_, chunk) => chunk == null ? "\r" : chunk.replace(/""/g, '"')).split("\r"));
-  if (header) {
-    const keys = rows.shift();
-    return rows.map((row) => keys.reduce((record, key, index) => {
-      record[key] = row[index];
-      return record;
-    }, {}));
-  }
-  return rows;
+  return text.replace(/\r/g, "").replace(/\n+$/, "").replace(/\n|(?<!")("(?:[^"]|"")*")(?!")/g, (_, chunk) => chunk ?? "\r").split("\r").map((line) => line.replace(regExp, (_, chunk) => chunk == null ? "\r" : chunk.replace(/""/g, '"')).split("\r"));
 };
+var _csvParseHeaderTrue = (text, separator) => {
+  const rows = _csvParseHeaderFalse(text, separator);
+  const keys = rows.shift();
+  return rows.map((row) => keys.reduce((record, key, index) => {
+    record[key] = row[index];
+    return record;
+  }, {}));
+};
+var csvParse = (text, { header = true, separator = "," } = {}) => header ? _csvParseHeaderTrue(text, separator) : _csvParseHeaderFalse(text, separator);
 
 // src/nnn/escape.ts
 var escapeValues = (escapeMap, values) => values.map((value) => (escapeMap.get(value?.constructor) ?? escapeMap.get(undefined))?.(value) ?? "");

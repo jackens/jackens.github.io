@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.8.6</code></sub>
+<sub>Version: <code class="version">2024.8.24</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.8.6/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.8.24/nnn.js'
 ```
 
 ## Exports
@@ -325,10 +325,19 @@ expect(actual).to.deep.equal(expected)
 ### csvParse
 
 ```ts
-const csvParse: (text: string, { header, separator }?: {
-    header?: boolean | undefined;
-    separator?: string | undefined;
-}) => Partial<Array<Partial<Record<PropertyKey, string>>>> | Partial<Array<Partial<Array<string>>>>;
+const csvParse: {
+    (text: string): Partial<Array<Partial<Record<PropertyKey, string>>>>;
+    <HeaderTrue extends {
+        header: true;
+    }>(text: string, config: HeaderTrue): Partial<Array<Partial<Record<PropertyKey, string>>>>;
+    <HeaderFalse extends {
+        header: false;
+    }>(text: string, config: HeaderFalse): Partial<Array<Partial<Array<string>>>>;
+    (text: string, config: Partial<{
+        header: false;
+        separator: string;
+    }>): Partial<Array<Partial<Record<PropertyKey, string>>>> | Partial<Array<Partial<Array<string>>>>;
+};
 ```
 
 A tiny helper for CSV parsing.
