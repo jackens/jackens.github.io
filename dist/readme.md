@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.8.24</code></sub>
+<sub>Version: <code class="version">2024.8.25</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or:
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.8.24/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.8.25/nnn.js'
 ```
 
 ## Exports
@@ -334,7 +334,7 @@ const csvParse: {
         header: false;
     }>(text: string, config: HeaderFalse): Partial<Array<Partial<Array<string>>>>;
     (text: string, config: Partial<{
-        header: false;
+        header: boolean;
         separator: string;
     }>): Partial<Array<Partial<Record<PropertyKey, string>>>> | Partial<Array<Partial<Array<string>>>>;
 };
