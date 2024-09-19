@@ -25,9 +25,10 @@ h(document.body,
     a('GitHub • Trending Zig', 'https://github.com/trending/zig')
   ],
   ['ul',
+    a('Strava', 'https://www.strava.com'),
     a('PS Deals', 'https://psdeals.net/pl-store'),
     a('Apple • Report a Problem', 'https://reportaproblem.apple.com/'),
-    a('YouTube • Andrzej Dragan', 'https://m.youtube.com/results?sp=mAEA&search_query=andrzej+dragan')
+    a('YouTube • Andrzej Dragan', 'https://m.youtube.com/results?search_query=andrzej+dragan')
   ],
   ['ul',
     a('Lichess', 'https://lichess.org/pl'),
