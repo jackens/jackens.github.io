@@ -3,8 +3,8 @@ import { c, h } from '../../dist/nnn.js'
 document.title = 'Bookmarks'
 
 const a = /** @returns {import('../../dist/nnn.js').HArgs} */ (
-  /** @type {string} */ text, /** @type {string} */ bref
-) => ['li', ['a', { bref }, text]]
+  /** @type {string} */ text, /** @type {string} */ href
+) => ['li', ['a', { href }, text]]
 
 h(document.body,
   ['style', c({
