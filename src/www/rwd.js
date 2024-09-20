@@ -1,11 +1,13 @@
 import { c, h } from '../../dist/nnn.js'
 
+/** @import { CNode, CRoot, HArgs } from '../../dist/nnn.js' */
+
 document.title = 'nnn • Responsive Web Design Demo'
 
 const CELL_WIDTH = 250
 const CELL_HEIGHT = 100
 
-const /** @type {import('../nnn/c.js').CRoot} */ root = {
+const /** @type {CRoot} */ root = {
   body: {
     backgroundColor: '#222',
     margin: '5px'
@@ -42,7 +44,7 @@ const /** @type {import('../nnn/c.js').CRoot} */ root = {
 }
 
 for (let maxWidth = 1; maxWidth <= 10; ++maxWidth) {
-  let /** @type {import('../nnn/c.js').CNode} */ node
+  let /** @type {CNode} */ node
 
   if (maxWidth > 1) {
     root[`@media(min-width:${CELL_WIDTH * maxWidth}px)`] = { '.rwd': (node = {}) }
@@ -89,9 +91,9 @@ for (let maxWidth = 1; maxWidth <= 10; ++maxWidth) {
 
 let counter = 0
 
-const div = /** @return {import('../nnn/h.js').HArgs} */ (
-  /** @type {string} */ spec,
-  /** @type {Partial<Array<import('../nnn/h.js').HArgs>>} */ ...items
+const div = /** @return {HArgs} */ (
+  /** @type {string}                */ spec,
+  /** @type {Partial<Array<HArgs>>} */ ...items
 ) => ['div', { class: `rwd ${spec}` }, ...(items.length > 0 ? items : [++counter])]
 
 h(document.body,

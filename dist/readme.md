@@ -385,7 +385,7 @@ A generic helper for escaping `values` by given `escapeMap` (in *TemplateStrings
 #### Usage Examples
 
 ```js
-const /** @type {import('../dist/nnn.js').EscapeMap} */ escapeMap = new Map([
+const /** @type {EscapeMap} */ escapeMap = new Map([
   [undefined, () => 'NULL'],
   [Array, (/** @type {Partial<Array<unknown>>} */ values) => escapeValues(escapeMap, values).join(', ')],
   [Boolean, (/** @type {boolean} */ value) => `b'${+value}'`],

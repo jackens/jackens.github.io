@@ -1,5 +1,7 @@
 import { c, h, s } from '../../dist/nnn.js'
 
+/** @import { HArgs, HArgs1 } from '../nnn/h.js' */
+
 document.title = 'nnn • Gantt Chart Demo'
 
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
@@ -65,7 +67,7 @@ tasks.forEach((/** @type {Required<Task>} */ task) => {
   task.finishPx = Math.round(PIXELS_PER_DAY * (task.finish) / MILLISECONDS_PER_DAY) - startPx
 })
 
-const /** @type {import('../nnn/h.js').HArgs} */ svg = ['svg', {
+const /** @type {HArgs} */ svg = ['svg', {
   viewBox: `0 0 ${finishPx - startPx} ${42 * tasks.length - 10}`,
   width: `${finishPx - startPx}px`,
   height: `${42 * tasks.length - 10}px`
@@ -116,8 +118,8 @@ tasks.forEach((/** @type {Required<Task>} */ task, t) => {
     fill: task.color,
     'fill-opacity': 0.84
   }
-  const /** @type {import('../nnn/h.js').HArgs1} */ bg = ['rect', bgAttributes]
-  const /** @type {import('../nnn/h.js').HArgs1} */ rect = ['rect', rectAttributes, ['title', task.name]]
+  const /** @type {HArgs1} */ bg = ['rect', bgAttributes]
+  const /** @type {HArgs1} */ rect = ['rect', rectAttributes, ['title', task.name]]
 
   if (task.finish !== task.start) {
     bgAttributes.width = rectAttributes.width = task.finishPx - task.startPx

@@ -1,10 +1,8 @@
 import { c, h } from '../../dist/nnn.js'
 
-document.title = 'Bookmarks'
+/** @import { HArgs } from '../../dist/nnn.js' */
 
-const a = /** @returns {import('../../dist/nnn.js').HArgs} */ (
-  /** @type {string} */ text, /** @type {string} */ href
-) => ['li', ['a', { href }, text]]
+document.title = 'Bookmarks'
 
 h(document.body,
   ['style', c({
@@ -19,23 +17,24 @@ h(document.body,
       }]))
   })],
   ['ul',
-    a('Apple • Report a Problem', 'https://reportaproblem.apple.com/'),
-    a('BBC News', 'https://www.bbc.com/news/world/europe'),
-    a('Chess.com News', 'https://www.chess.com/news'),
-    a('GitHub • Trending Go', 'https://github.com/trending/go'),
-    a('GitHub • Trending JavaScript', 'https://github.com/trending/javascript'),
-    a('GitHub • Trending Rust', 'https://github.com/trending/rust'),
-    a('GitHub • Trending TypeScript', 'https://github.com/trending/typescript'),
-    a('GitHub • Trending Zig', 'https://github.com/trending/zig'),
-    a('GitHub • Trending', 'https://github.com/trending'),
-    a('GitHub • jackens', 'https://github.com/jackens/'),
-    a('Jackens’ Homepage', 'https://jackens.github.io/'),
-    a('Lichess', 'https://lichess.org/pl'),
-    a('NPM • @jackens/nnn', 'https://www.npmjs.com/package/@jackens/nnn'),
-    a('OpenFm 90s', 'https://www.radio.net/s/openfm90s'),
-    a('PS Deals', 'https://psdeals.net/pl-store'),
-    a('Pogoda • Katowice',
-      'https://weather.com/pl-PL/pogoda/godzinowa/l/f2b823199bed31459790ff62f9884bf7e2c6c688716027376a3dab1412c708f6'),
-    a('Strava', 'https://www.strava.com'),
-    a('YouTube • Andrzej Dragan', 'https://m.youtube.com/results?search_query=andrzej+dragan')
+    ...[
+      ['Apple • Report a Problem', 'https://reportaproblem.apple.com/'],
+      ['BBC News', 'https://www.bbc.com/news/world/europe'],
+      ['Chess.com News', 'https://www.chess.com/news'],
+      ['GitHub • Trending Go', 'https://github.com/trending/go'],
+      ['GitHub • Trending JavaScript', 'https://github.com/trending/javascript'],
+      ['GitHub • Trending Rust', 'https://github.com/trending/rust'],
+      ['GitHub • Trending TypeScript', 'https://github.com/trending/typescript'],
+      ['GitHub • Trending Zig', 'https://github.com/trending/zig'],
+      ['GitHub • Trending', 'https://github.com/trending'],
+      ['GitHub • jackens', 'https://github.com/jackens/'],
+      ['Jackens’ Homepage', 'https://jackens.github.io/'],
+      ['Lichess', 'https://lichess.org/pl'],
+      ['NPM • @jackens/nnn', 'https://www.npmjs.com/package/@jackens/nnn'],
+      ['OpenFm 90s', 'https://www.radio.net/s/openfm90s'],
+      ['PS Deals', 'https://psdeals.net/pl-store'],
+      ['Pogoda • Katowice', 'https://weather.com/pl-PL/pogoda/godzinowa/l/f2b823199bed31459790ff62f9884bf7e2c6c688716027376a3dab1412c708f6'],
+      ['Strava', 'https://www.strava.com'],
+      ['YouTube • Andrzej Dragan', 'https://m.youtube.com/results?search_query=andrzej+dragan']
+    ].map(/** @returns {HArgs} */ ([text, href]) => ['li', ['a', { href }, text]])
   ])

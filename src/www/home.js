@@ -1,15 +1,17 @@
 import { c, h } from '../../dist/nnn.js'
 
+/** @import { HArgs} from '../../dist/nnn.js' */
+
 document.title = 'Jackens’ Homepage'
 
-const item = /** @returns {import('../../dist/nnn.js').HArgs} */ (
+const item = /** @returns {HArgs} */ (
   /** @type {string}   */ href,
   /** @type {string}   */ text,
   /** @type {string[]} */ ...imgs
 ) => ['li',
   ['a', { href }, text],
   imgs.length > 0
-    ? ['div', ...imgs.map(/** @returns {import('../../dist/nnn.js').HArgs} */ img => ['img', { src: `./res/${img}` }])]
+    ? ['div', ...imgs.map(/** @returns {HArgs} */ img => ['img', { src: `./res/${img}` }])]
     : null]
 
 const res = (

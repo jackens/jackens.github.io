@@ -20,6 +20,8 @@ import {
 // @ts-expect-error
 import { expect } from '../../node_modules/chai/chai.js'
 
+/** @import { EscapeMap } from '../../dist/nnn.js' */
+
 const test = (/** @type {string} */ _title, /** @type {() => void} */ handler) => handler()
 
 test('c: #1', () => {
@@ -244,7 +246,7 @@ yyy",zzz
 
 test('escape', () => {
   // @ts-expect-error
-  const /** @type {import('../dist/nnn.js').EscapeMap} */ escapeMap = new Map([
+  const /** @type {EscapeMap} */ escapeMap = new Map([
     [undefined, () => 'NULL'],
     [Array, (/** @type {Partial<Array<unknown>>} */ values) => escapeValues(escapeMap, values).join(', ')],
     [Boolean, (/** @type {boolean} */ value) => `b'${+value}'`],
