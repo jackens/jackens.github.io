@@ -32,9 +32,7 @@ const CONST = JSON.stringify([['span', { class: 'keyword' }, 'const'], ' '])
 
 for (const e of div.querySelectorAll('code')) {
   if (['', 'language-js', 'language-ts'].includes(e.className)) {
-    const code = e.innerText
-
-    h(e, { $innerText: '' }, ...nanolightJs(code).map((eI, i, eArr) => {
+    h(e, { $innerText: '' }, ...nanolightJs(e.innerText).map((eI, i, eArr) => {
       if (is(Array, eI)) {
         const [, attributes, name] = eI
 
