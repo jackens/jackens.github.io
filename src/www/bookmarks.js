@@ -36,6 +36,6 @@ h(document.body,
       ['Pogoda • Katowice', 'https://weather.com/pl-PL/pogoda/godzinowa/l/f2b823199bed31459790ff62f9884bf7e2c6c688716027376a3dab1412c708f6'],
       ['Strava', 'https://www.strava.com'],
       ['YouTube • Andrzej Dragan', 'https://www.youtube.com/results?search_query=andrzej+dragan'],
-      ['YouTube • Sean Carrol', 'https://www.youtube.com/@seancarroll/videos']
+      ['YouTube • Sean Carrol', 'https://www.youtube.com/@seancarroll/playlists']
     ].map(/** @returns {HArgs} */ ([text, href]) => ['li', ['a', { href }, text]])
   ])
