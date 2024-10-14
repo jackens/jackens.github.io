@@ -28,13 +28,13 @@ npm i @jackens/nnn
 import { «something» } from '@jackens/nnn'
 ```
 
-or:
+or
 
 ```js
 import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 ```
 
-or:
+or
 
 ```js
 import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.10.4/nnn.js'
