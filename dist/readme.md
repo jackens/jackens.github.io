@@ -587,17 +587,19 @@ A helper that checks if the given argument is of a certain type.
 ```js
 expect(is(Number, 42)).to.be.true
 expect(is(Number, Number(42))).to.be.true
-
 expect(is(Number, new Number(42))).to.be.true
 expect(is(Number, NaN)).to.be.true
+
 expect(is(String, '42')).to.be.true
 expect(is(String, String('42'))).to.be.true
-
 expect(is(String, new String('42'))).to.be.true
+
 expect(is(Symbol, Symbol('42'))).to.be.true
 expect(is(Symbol, Object(Symbol('42')))).to.be.true
+
 expect(is(undefined, undefined)).to.be.true
 expect(is(undefined, null)).to.be.true
+
 expect(is(Object, {})).to.be.true
 expect(is(Array, [])).to.be.true
 expect(is(RegExp, /42/)).to.be.true
