@@ -35,9 +35,9 @@ h(document.body,
       ['OpenFm 90s', 'https://www.radio.net/s/openfm90s'],
       ['Pogoda • Katowice', 'https://weather.com/pl-PL/pogoda/godzinowa/l/f2b823199bed31459790ff62f9884bf7e2c6c688716027376a3dab1412c708f6'],
       ['PS Deals', 'https://psdeals.net/pl-store'],
+      ['Running • Fueling Calculator', 'https://nduranz.com/pages/fueling-calculator'],
       ['Running • geojson.io', 'https://geojson.io/#map=11.05/50.2279/19.007'],
       ['Running • gpx.studio', 'https://gpx.studio/'],
-      ['Running • Fueling Calculator', 'https://nduranz.com/pages/fueling-calculator'],
       ['YouTube • Andrzej Dragan', 'https://www.youtube.com/results?search_query=andrzej+dragan'],
       ['YouTube • Sean Carrol', 'https://www.youtube.com/@seancarroll/playlists']
     ].map(/** @returns {HArgs} */ ([text, href]) => ['li', ['a', { href }, text]])
