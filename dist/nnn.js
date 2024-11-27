@@ -158,7 +158,7 @@ var fixTypography = (node) => {
         let previousNode = node0;
         nodeValue.split(/(\s|\(|„)([aiouwz—]\s)/gi).forEach((chunk, i) => {
           i %= 3;
-          const currentNode = i === 2 ? h("span", { style: "white-space:nowrap" }, chunk) : i === 1 ? document.createTextNode(chunk) : document.createTextNode(chunk.replace(/(\/(?=[^/\s])|\.(?=[^\s]))/g, "$1\u200B"));
+          const currentNode = i === 2 ? h("span", { style: "white-space:nowrap" }, chunk) : i === 1 ? document.createTextNode(chunk) : document.createTextNode(chunk.replace(/(\/(?=[^/\s])|\.(?=[^\s]))/g, "$1​"));
           if (node0.parentNode != null) {
             node0.parentNode.insertBefore(currentNode, previousNode.nextSibling);
           }

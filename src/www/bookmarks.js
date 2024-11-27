@@ -38,6 +38,7 @@ h(document.body,
       ['Running • Fueling Calculator', 'https://nduranz.com/pages/fueling-calculator'],
       ['Running • geojson.io', 'https://geojson.io/#map=11.05/50.2279/19.007'],
       ['Running • gpx.studio', 'https://gpx.studio/'],
+      ['Running • mapmyrun', 'https://www.mapmyrun.com/'],
       ['YouTube • Andrzej Dragan', 'https://www.youtube.com/results?search_query=andrzej+dragan'],
       ['YouTube • Sean Carrol', 'https://www.youtube.com/@seancarroll/playlists']
     ].map(/** @returns {HArgs} */ ([text, href]) => ['li', ['a', { href }, text]])
