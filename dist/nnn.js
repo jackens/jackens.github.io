@@ -53,7 +53,6 @@ var c = (root, splitter = "$$") => {
   }
   return chunks.join("");
 };
-
 // src/nnn/csvParse.ts
 var _csvParseHeaderFalse = (text, separator) => {
   const regExp = new RegExp(`${separator}|(?<!")\\s*"((?:[^"]|"")*)"\\s*(?!")`, "g");
@@ -68,11 +67,9 @@ var _csvParseHeaderTrue = (text, separator) => {
   }, {}));
 };
 var csvParse = (text, { header = true, separator = "," } = {}) => header ? _csvParseHeaderTrue(text, separator) : _csvParseHeaderFalse(text, separator);
-
 // src/nnn/escape.ts
 var escapeValues = (escapeMap, values) => values.map((value) => (escapeMap.get(value?.constructor) ?? escapeMap.get(undefined))?.(value) ?? "");
 var escape = (escapeMap, template, ...values) => String.raw(template, ...escapeValues(escapeMap, values));
-
 // src/nnn/h.ts
 var NS = {
   xlink: "http://www.w3.org/1999/xlink"
@@ -169,10 +166,8 @@ var fixTypography = (node) => {
     }
   }
 };
-
 // src/nnn/has.ts
 var has = (key, ref) => (is(String, key) || is(Number, key) || is(Symbol, key)) && Object.hasOwnProperty.call(ref ?? Object, key);
-
 // src/nnn/jsOnParse.ts
 var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
   if (is(Object, value)) {
@@ -191,14 +186,12 @@ var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
   }
   return value;
 });
-
 // src/nnn/locale.ts
 var locale = (map, defaultVersion) => (text, version = defaultVersion) => {
   const textV = map?.[version]?.[text];
   const textD = map?.[defaultVersion]?.[text];
   return is(String, textV) ? textV : is(String, textD) ? textD : text;
 };
-
 // src/nnn/nanolight.ts
 var nanolight = (pattern, highlighters, code) => {
   const result = [];
@@ -210,7 +203,6 @@ var nanolight = (pattern, highlighters, code) => {
   });
   return result;
 };
-
 // src/nnn/nanolightJs.ts
 var nanolightJs = nanolight.bind(0, /('.*?'|".*?"|`[\s\S]*?`)|(\/\/.*?\n|\/\*[\s\S]*?\*\/)|(any|bigint|break|boolean|case|catch|class|const|continue|debugger|default|delete|do|else|eval|export|extends|false|finally|for|from|function|goto|if|import|in|instanceof|is|keyof|let|NaN|new|number|null|package|return|string|super|switch|symbol|this|throw|true|try|type|typeof|undefined|unknown|var|void|while|with|yield)(?!\w)|([<>=.?:&|!^~*/%+-])|(0x[\dabcdef_]+|0o[01234567_]+|0b[01_]+|\d[\d_]*(?:\.[\d_]+)?(?:e[+-]?[\d_]+)?)|([$\w]+)(?=\()|([$\wąćęłńóśżźĄĆĘŁŃÓŚŻŹ]+)/, [
   (chunk) => chunk,
@@ -222,25 +214,21 @@ var nanolightJs = nanolight.bind(0, /('.*?'|".*?"|`[\s\S]*?`)|(\/\/.*?\n|\/\*[\s
   (chunk) => ["span", { class: "function" }, chunk],
   (chunk) => ["span", { class: "literal" }, chunk]
 ]);
-
 // src/nnn/pick.ts
 var pick = (obj, keys) => Object.fromEntries(Object.entries(obj).filter(([key]) => keys.includes(key)));
 var omit = (obj, keys) => Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)));
-
 // src/nnn/plUral.ts
 var plUral = (singular, plural2, plural5, value) => {
   const absValue = Math.abs(value);
   const absValueMod10 = absValue % 10;
   return value === 1 ? singular : (absValueMod10 === 2 || absValueMod10 === 3 || absValueMod10 === 4) && absValue !== 12 && absValue !== 13 && absValue !== 14 ? plural2 : plural5;
 };
-
 // src/nnn/pro.ts
 var pro = (ref) => new Proxy(ref, {
   get(target, key) {
     return pro(target[key] = target[key] ?? {});
   }
 });
-
 // src/nnn/refsInfo.ts
 var refsInfo = (...refs) => {
   const fns = new Set;
@@ -259,7 +247,6 @@ var refsInfo = (...refs) => {
     Object.getOwnPropertyNames(fn.prototype ?? Object.create(null)).sort()
   ]).sort((a, b) => -(a[0] < b[0]));
 };
-
 // src/nnn/uuid1.ts
 var ZEROS = "0".repeat(16);
 var counter = 0;
