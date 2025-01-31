@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2024.10.4</code></sub>
+<sub>Version: <code class="version">2025.1.31</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2024.10.4/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.1.31/nnn.js'
 ```
 
 ## Exports
@@ -536,10 +536,13 @@ A replacement for the `in` operator (not to be confused with the `for-in` loop) 
 #### Usage Examples
 
 ```js
-const obj = { key: 'K', null: 'N' }
+const obj = { 'k,e,y': 42, null: 42 }
 
-expect('key' in obj).to.be.true
-expect(has('key', obj)).to.be.true
+expect('k,e,y' in obj).to.be.true
+expect(has('k,e,y', obj)).to.be.true
+
+expect(['k', 'e', 'y'] in obj).to.be.true
+expect(has(['k', 'e', 'y'], obj)).to.be.false
 
 expect('null' in obj).to.be.true
 expect(has('null', obj)).to.be.true

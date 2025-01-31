@@ -167,7 +167,7 @@ var fixTypography = (node) => {
   }
 };
 // src/nnn/has.ts
-var has = (key, ref) => (is(String, key) || is(Number, key) || is(Symbol, key)) && Object.hasOwnProperty.call(ref ?? Object, key);
+var has = (key, ref) => ref != null && (is(String, key) || is(Number, key) || is(Symbol, key)) && Object.hasOwnProperty.call(ref, key);
 // src/nnn/jsOnParse.ts
 var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
   if (is(Object, value)) {

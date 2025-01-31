@@ -218,7 +218,7 @@ test('c: #6', () => {
   expect(actual).to.deep.equal(expected)
 })
 
-test('csvParse', () => {
+test('csvParse:', () => {
   const text = `"aaa
 ""aaa""
 aaa",bbb, "ccc,ccc"
@@ -244,7 +244,7 @@ yyy",zzz
   }])
 })
 
-test('escape', () => {
+test('escape:', () => {
   // @ts-expect-error
   const /** @type {EscapeMap} */ escapeMap = new Map([
     [undefined, () => 'NULL'],
@@ -270,7 +270,7 @@ test('escape', () => {
   expect(actual).to.deep.equal(expected)
 })
 
-test('fixTypography', () => {
+test('fixTypography:', () => {
   const p = h('p', 'Pchnąć w tę łódź jeża lub ośm skrzyń fig (zob. https://pl.wikipedia.org/wiki/Pangram).')
 
   fixTypography(p)
@@ -280,7 +280,7 @@ test('fixTypography', () => {
     '(zob. https://\u200Bpl.\u200Bwikipedia.\u200Borg/\u200Bwiki/\u200BPangram).')
 })
 
-test('h', () => {
+test('h:', () => {
   const b = h('b')
 
   expect(b.outerHTML).to.deep.equal('<b></b>')
@@ -349,11 +349,15 @@ test('h: nested properties', () => {
   expect(div.key).to.deep.equal({ one: 1, two: 2 })
 })
 
-test('has', () => {
-  const obj = { key: 'K', null: 'N' }
+test('has:', () => {
+  const obj = { 'k,e,y': 42, null: 42 }
 
-  expect('key' in obj).to.be.true
-  expect(has('key', obj)).to.be.true
+  expect('k,e,y' in obj).to.be.true
+  expect(has('k,e,y', obj)).to.be.true
+
+  // @ts-expect-error
+  expect(['k', 'e', 'y'] in obj).to.be.true
+  expect(has(['k', 'e', 'y'], obj)).to.be.false
 
   expect('null' in obj).to.be.true
   expect(has('null', obj)).to.be.true
@@ -380,7 +384,7 @@ test('has: null', () => {
   expect(has('key', null)).to.be.false
 })
 
-test('is', () => {
+test('is:', () => {
   expect(is(Number, 42)).to.be.true
   expect(is(Number, Number(42))).to.be.true
   // eslint-disable-next-line no-new-wrappers
@@ -444,7 +448,7 @@ test('is: try to override constructor', () => {
   expect(is(Number, num)).to.be.true
 })
 
-test('jsOnParse', () => {
+test('jsOnParse:', () => {
   const handlers = {
     $hello: (/** @type {string} */ name) => `Hello ${name}!`,
     $foo: () => 'bar'
@@ -489,7 +493,7 @@ test('jsOnParse', () => {
   expect(actual).to.deep.equal(expected)
 })
 
-test('locale', () => {
+test('locale:', () => {
   const _ = locale({
     default: { Password: 'Hasło' },
     button: { Login: 'Zaloguj' }
@@ -509,7 +513,7 @@ test('locale', () => {
   expect(_('toString', 'undefined_version')).to.deep.equal('toString')
 })
 
-test('nanolightJs', () => {
+test('nanolightJs:', () => {
   const codeJs = 'const answerToLifeTheUniverseAndEverything = 42'
 
   expect(nanolightJs(codeJs)).to.deep.equal([
@@ -523,19 +527,19 @@ test('nanolightJs', () => {
   ])
 })
 
-test('omit', () => {
+test('omit:', () => {
   const obj = { a: 42, b: '42', c: 17 }
 
   expect(omit(obj, ['c'])).to.deep.equal({ a: 42, b: '42' })
 })
 
-test('pick', () => {
+test('pick:', () => {
   const obj = { a: 42, b: '42', c: 17 }
 
   expect(pick(obj, ['a', 'b'])).to.deep.equal({ a: 42, b: '42' })
 })
 
-test('plUral', () => {
+test('plUral:', () => {
   const auto = plUral.bind(null, 'auto', 'auta', 'aut')
 
   expect(auto(0)).to.deep.equal('aut')
@@ -551,7 +555,7 @@ test('plUral', () => {
   expect(car(42)).to.deep.equal('cars')
 })
 
-test('pro', () => {
+test('pro:', () => {
   const ref = {}
 
   pro(ref).one.two[3][4] = 1234
@@ -579,7 +583,7 @@ test('pro', () => {
   expect(ref).to.deep.equal({ one: { two: { three: { four: 1234 } } } })
 })
 
-test('refsInfo', () => {
+test('refsInfo:', () => {
   const info = refsInfo(Array, Function)
 
   expect(info.find(item => item?.[0] === 'Array')?.[2]?.includes('length')).to.be.true
@@ -611,7 +615,7 @@ test('refsInfo: browserFingerprint', () => {
   console.log(browserFingerprint())
 })
 
-test('uuid1', () => {
+test('uuid1:', () => {
   for (let i = 1; i <= 22136; ++i) {
     const uuid = uuid1()
 
