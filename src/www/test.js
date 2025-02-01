@@ -357,14 +357,14 @@ test('has:', () => {
 
   // @ts-expect-error
   expect(['k', 'e', 'y'] in obj).to.be.true
-  expect(has(['k', 'e', 'y'], obj)).to.be.false
+  expect(has(['k', 'e', 'y'], obj)).to.be.true
 
   expect('null' in obj).to.be.true
   expect(has('null', obj)).to.be.true
 
   // @ts-expect-error
   expect(null in obj).to.be.true
-  expect(has(null, obj)).to.be.false
+  expect(has(null, obj)).to.be.true
 
   expect('toString' in obj).to.be.true
   expect(has('toString', obj)).to.be.false

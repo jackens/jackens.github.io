@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2025.1.31</code></sub>
+<sub>Version: <code class="version">2025.2.1</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.1.31/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.1/nnn.js'
 ```
 
 ## Exports
@@ -542,13 +542,13 @@ expect('k,e,y' in obj).to.be.true
 expect(has('k,e,y', obj)).to.be.true
 
 expect(['k', 'e', 'y'] in obj).to.be.true
-expect(has(['k', 'e', 'y'], obj)).to.be.false
+expect(has(['k', 'e', 'y'], obj)).to.be.true
 
 expect('null' in obj).to.be.true
 expect(has('null', obj)).to.be.true
 
 expect(null in obj).to.be.true
-expect(has(null, obj)).to.be.false
+expect(has(null, obj)).to.be.true
 
 expect('toString' in obj).to.be.true
 expect(has('toString', obj)).to.be.false
