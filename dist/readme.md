@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2025.2.1</code></sub>
+<sub>Version: <code class="version">2025.2.2</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.1/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.2/nnn.js'
 ```
 
 ## Exports
@@ -53,7 +53,7 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.1/nnn.js'
 - `escapeValues`: A generic helper for escaping `values` by given `escapeMap`.
 - `fixTypography`: A helper that implements typographic corrections specific to Polish typography.
 - `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
-- `has`: A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
+- `hasOwn`: A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
 - `is`: A helper that checks if the given argument is of a certain type.
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
 - `locale`: Language translations helper.
@@ -525,10 +525,10 @@ h(div, { $key: { two: 2 } })
 expect(div.key).to.deep.equal({ one: 1, two: 2 })
 ```
 
-### has
+### hasOwn
 
 ```ts
-const has: (key: unknown, ref: unknown) => boolean;
+const hasOwn: (ref: unknown, key: unknown) => boolean;
 ```
 
 A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
@@ -536,35 +536,34 @@ A replacement for the `in` operator (not to be confused with the `for-in` loop) 
 #### Usage Examples
 
 ```js
-const obj = { 'k,e,y': 42, null: 42 }
+const obj = { 42: null, null: 'k,e,y', 'k,e,y': 42 }
 
-expect('k,e,y' in obj).to.be.true
-expect(has('k,e,y', obj)).to.be.true
+expect(42 in obj).to.be.true
+expect(hasOwn(obj, 42)).to.be.true
 
-expect(['k', 'e', 'y'] in obj).to.be.true
-expect(has(['k', 'e', 'y'], obj)).to.be.true
+expect('42' in obj).to.be.true
+expect(hasOwn(obj, '42')).to.be.true
 
 expect('null' in obj).to.be.true
-expect(has('null', obj)).to.be.true
+expect(hasOwn(obj, 'null')).to.be.true
 
 expect(null in obj).to.be.true
-expect(has(null, obj)).to.be.true
+expect(hasOwn(obj, null)).to.be.true
+
+expect('k,e,y' in obj).to.be.true
+expect(hasOwn(obj, 'k,e,y')).to.be.true
+
+expect(['k', 'e', 'y'] in obj).to.be.true
+expect(hasOwn(obj, ['k', 'e', 'y'])).to.be.true
 
 expect('toString' in obj).to.be.true
-expect(has('toString', obj)).to.be.false
-```
+expect(hasOwn(obj, 'toString')).to.be.false
 
-```js
-let typeError
+expect(() => 'key' in null).to.throw
+expect(hasOwn(null, 'key')).to.be.false
 
-try {
-  'key' in null
-} catch (error) {
-  typeError = error
-}
-
-expect(typeError instanceof TypeError) // Cannot use 'in' operator to search for 'key' in null
-expect(has('key', null)).to.be.false
+expect(() => 'key' in undefined).to.throw
+expect(hasOwn(undefined, 'key')).to.be.false
 ```
 
 ### is

@@ -166,8 +166,8 @@ var fixTypography = (node) => {
     }
   }
 };
-// src/nnn/has.ts
-var has = (key, ref) => ref != null && Object.hasOwnProperty.call(ref, key);
+// src/nnn/hasOwn.ts
+var hasOwn = (ref, key) => ref != null && Object.hasOwn(ref, key);
 // src/nnn/jsOnParse.ts
 var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
   if (is(Object, value)) {
@@ -272,7 +272,7 @@ export {
   locale,
   jsOnParse,
   is,
-  has,
+  hasOwn,
   h,
   fixTypography,
   escapeValues,

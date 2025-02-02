@@ -5,7 +5,7 @@ import {
   escapeValues,
   fixTypography,
   h,
-  has,
+  hasOwn,
   is,
   jsOnParse,
   locale,
@@ -349,39 +349,39 @@ test('h: nested properties', () => {
   expect(div.key).to.deep.equal({ one: 1, two: 2 })
 })
 
-test('has:', () => {
-  const obj = { 'k,e,y': 42, null: 42 }
+test('hasOwn:', () => {
+  const obj = { 42: null, null: 'k,e,y', 'k,e,y': 42 }
 
-  expect('k,e,y' in obj).to.be.true
-  expect(has('k,e,y', obj)).to.be.true
+  expect(42 in obj).to.be.true
+  expect(hasOwn(obj, 42)).to.be.true
 
-  // @ts-expect-error
-  expect(['k', 'e', 'y'] in obj).to.be.true
-  expect(has(['k', 'e', 'y'], obj)).to.be.true
+  expect('42' in obj).to.be.true
+  expect(hasOwn(obj, '42')).to.be.true
 
   expect('null' in obj).to.be.true
-  expect(has('null', obj)).to.be.true
+  expect(hasOwn(obj, 'null')).to.be.true
 
   // @ts-expect-error
   expect(null in obj).to.be.true
-  expect(has(null, obj)).to.be.true
+  expect(hasOwn(obj, null)).to.be.true
+
+  expect('k,e,y' in obj).to.be.true
+  expect(hasOwn(obj, 'k,e,y')).to.be.true
+
+  // @ts-expect-error
+  expect(['k', 'e', 'y'] in obj).to.be.true
+  expect(hasOwn(obj, ['k', 'e', 'y'])).to.be.true
 
   expect('toString' in obj).to.be.true
-  expect(has('toString', obj)).to.be.false
-})
+  expect(hasOwn(obj, 'toString')).to.be.false
 
-test('has: null', () => {
-  let typeError
+  // @ts-expect-error
+  expect(() => 'key' in null).to.throw
+  expect(hasOwn(null, 'key')).to.be.false
 
-  try {
-    // @ts-expect-error
-    'key' in null
-  } catch (error) {
-    typeError = error
-  }
-
-  expect(typeError instanceof TypeError) // Cannot use 'in' operator to search for 'key' in null
-  expect(has('key', null)).to.be.false
+  // @ts-expect-error
+  expect(() => 'key' in undefined).to.throw
+  expect(hasOwn(undefined, 'key')).to.be.false
 })
 
 test('is:', () => {
