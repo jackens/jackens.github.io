@@ -229,31 +229,10 @@ var pro = (ref) => new Proxy(ref, {
     return pro(target[key] = target[key] ?? {});
   }
 });
-// src/nnn/refsInfo.ts
-var refsInfo = (...refs) => {
-  const fns = new Set;
-  refs.forEach((ref) => {
-    try {
-      while (ref instanceof Function && !fns.has(ref) && `${ref}`.match(/function\s+\w+[\s\S]+\[native code\]/)) {
-        fns.add(ref);
-        ref = Object.getPrototypeOf(ref);
-      }
-    } catch {
-    }
-  });
-  return Array.from(fns.values()).map((fn) => [
-    fn.name,
-    Object.getPrototypeOf(fn)?.name ?? "",
-    Object.getOwnPropertyNames(fn.prototype ?? Object.create(null)).sort()
-  ]).sort((a, b) => -(a[0] < b[0]));
-};
 // src/nnn/uuid1.ts
 var ZEROS = "0".repeat(16);
 var counter = 0;
-var uuid1 = ({
-  date = new Date,
-  node = Math.random().toString(16).slice(2)
-} = {}) => {
+var uuid1 = (date = new Date, node = Math.random().toString(16).slice(2)) => {
   const time = ZEROS + (1e4 * (+date + 12219292800000)).toString(16);
   counter = counter + 1 & 16383;
   return time.slice(-8).concat("-", time.slice(-12, -8), -1, time.slice(-15, -12), "-", (8 | counter >> 12).toString(16), (ZEROS + (counter & 4095).toString(16)).slice(-3), "-", (ZEROS + node).slice(-12));
@@ -262,7 +241,6 @@ export {
   uuid1,
   svgUse,
   s,
-  refsInfo,
   pro,
   plUral,
   pick,

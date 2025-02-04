@@ -14,7 +14,6 @@ import {
   pick,
   plUral,
   pro,
-  refsInfo,
   uuid1
 } from '../../dist/nnn.js'
 // @ts-expect-error
@@ -583,38 +582,6 @@ test('pro:', () => {
   expect(ref).to.deep.equal({ one: { two: { three: { four: 1234 } } } })
 })
 
-test('refsInfo:', () => {
-  const info = refsInfo(Array, Function)
-
-  expect(info.find(item => item?.[0] === 'Array')?.[2]?.includes('length')).to.be.true
-  expect(info.find(item => item?.[0] === 'Function')?.[2]?.includes('length')).to.be.true
-})
-
-test('refsInfo: browserFingerprint', () => {
-  const browserFingerprint = () => {
-    // @ts-expect-error
-    const refs = Object.getOwnPropertyNames(window).map(name => window[name])
-    const info = refsInfo(...refs)
-    const json = JSON.stringify(info)
-    const hash = Array(32).fill(0)
-    let j = 0
-
-    for (let i = 0; i < json.length; i++) {
-      let charCode = json.charCodeAt(i)
-
-      while (charCode > 0) {
-        hash[j] = hash[j] ^ (charCode & 15)
-        charCode >>= 4
-        j = (j + 1) & 31
-      }
-    }
-
-    return hash.map(x => x.toString(16)).join('')
-  }
-
-  console.log(browserFingerprint())
-})
-
 test('uuid1:', () => {
   for (let i = 1; i <= 22136; ++i) {
     const uuid = uuid1()
@@ -630,10 +597,10 @@ test('uuid1:', () => {
 })
 
 test('uuid1: node', () => {
-  expect(uuid1({ node: '000123456789abc' }).split('-')[4]).to.deep.equal('123456789abc')
-  expect(uuid1({ node: '123456789' }).split('-')[4]).to.deep.equal('000123456789')
+  expect(uuid1(new Date(), '000123456789abc').split('-')[4]).to.deep.equal('123456789abc')
+  expect(uuid1(new Date(), '123456789').split('-')[4]).to.deep.equal('000123456789')
 })
 
 test('uuid1: date', () => {
-  expect(uuid1({ date: new Date(323325000000) }).startsWith('c1399400-9a71-11bd')).to.be.true
+  expect(uuid1(new Date(323325000000)).startsWith('c1399400-9a71-11bd')).to.be.true
 })

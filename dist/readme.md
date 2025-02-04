@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2025.2.2</code></sub>
+<sub>Version: <code class="version">2025.2.4</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.2/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.4/nnn.js'
 ```
 
 ## Exports
@@ -63,7 +63,6 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.2/nnn.js'
 - `pick`: A helper that implements TypeScript’s `Pick` utility type (see also `omit`).
 - `plUral`: A helper for choosing the correct singular and plural.
 - `pro`: A helper that protects calls to nested properties by a `Proxy` that initializes non-existent values with an empty
-- `refsInfo`: A helper that provides information about the given `refs`.
 - `s`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `SVGElement`s (see also `h`).
 - `svgUse`: A convenient shortcut for `s('svg', ['use', { 'xlink:href': '#' + id }], ...args)`.
 - `uuid1`: A helper that generates a UUID v1 identifier (with a creation timestamp).
@@ -872,49 +871,6 @@ pro(ref).one.two.three.four = 1234
 expect(ref).to.deep.equal({ one: { two: { three: { four: 1234 } } } })
 ```
 
-### refsInfo
-
-```ts
-const refsInfo: (...refs: Partial<Array<unknown>>) => Partial<Array<[string, string, Partial<Array<string>>]>>;
-```
-
-A helper that provides information about the given `refs`.
-
-It returns an array of triples: `[«name», «prototype-name», «array-of-own-property-names»]`.
-
-#### Usage Examples
-
-```js
-const info = refsInfo(Array, Function)
-
-expect(info.find(item => item?.[0] === 'Array')?.[2]?.includes('length')).to.be.true
-expect(info.find(item => item?.[0] === 'Function')?.[2]?.includes('length')).to.be.true
-```
-
-```js
-const browserFingerprint = () => {
-  const refs = Object.getOwnPropertyNames(window).map(name => window[name])
-  const info = refsInfo(...refs)
-  const json = JSON.stringify(info)
-  const hash = Array(32).fill(0)
-  let j = 0
-
-  for (let i = 0; i < json.length; i++) {
-    let charCode = json.charCodeAt(i)
-
-    while (charCode > 0) {
-      hash[j] = hash[j] ^ (charCode & 15)
-      charCode >>= 4
-      j = (j + 1) & 31
-    }
-  }
-
-  return hash.map(x => x.toString(16)).join('')
-}
-
-console.log(browserFingerprint())
-```
-
 ### s
 
 ```ts
@@ -946,10 +902,7 @@ A convenient shortcut for `s('svg', ['use', { 'xlink:href': '#' + id }], ...args
 ### uuid1
 
 ```ts
-const uuid1: ({ date, node }?: {
-    date?: Date | undefined;
-    node?: string | undefined;
-}) => string;
+const uuid1: (date?: Date, node?: string) => string;
 ```
 
 A helper that generates a UUID v1 identifier (with a creation timestamp).
@@ -973,12 +926,12 @@ for (let i = 1; i <= 22136; ++i) {
 ```
 
 ```js
-expect(uuid1({ node: '000123456789abc' }).split('-')[4]).to.deep.equal('123456789abc')
-expect(uuid1({ node: '123456789' }).split('-')[4]).to.deep.equal('000123456789')
+expect(uuid1(new Date(), '000123456789abc').split('-')[4]).to.deep.equal('123456789abc')
+expect(uuid1(new Date(), '123456789').split('-')[4]).to.deep.equal('000123456789')
 ```
 
 ```js
-expect(uuid1({ date: new Date(323325000000) }).startsWith('c1399400-9a71-11bd')).to.be.true
+expect(uuid1(new Date(323325000000)).startsWith('c1399400-9a71-11bd')).to.be.true
 ```
 
 ## Why Partial\<Array\> and Partial\<Record\>
