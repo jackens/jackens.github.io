@@ -1,4 +1,4 @@
-import { c, h, is, nanolightJs, s, svgUse } from '../../dist/nnn.js'
+import { c, h, isArray, isString, nanolightJs, s, svgUse } from '../../dist/nnn.js'
 // @ts-expect-error
 import { marked } from '../../node_modules/marked/lib/marked.esm.js'
 
@@ -33,15 +33,16 @@ const CONST = JSON.stringify([['span', { class: 'keyword' }, 'const'], ' '])
 for (const e of div.querySelectorAll('code')) {
   if (['', 'language-js', 'language-ts'].includes(e.className)) {
     h(e, { $innerText: '' }, ...nanolightJs(e.innerText).map((eI, i, eArr) => {
-      if (is(Array, eI)) {
+      if (isArray(eI)) {
         const [, attributes, name] = eI
 
-        if (is(String, name) && names.includes(name) && is(Object, attributes)) {
-          const { class: cls } = attributes
+        if (isString(name) && names.includes(name)) {
+          // @ts-expect-error
+          const cls = attributes?.class
           const next1 = JSON.stringify(eArr[i + 1])
           const prev2 = JSON.stringify(eArr.slice(i - 2, i))
 
-          if (is(String, cls) && ['function', 'keyword', 'literal'].includes(cls) &&
+          if (isString(cls) && ['function', 'keyword', 'literal'].includes(cls) &&
             (name.length > 2 || next1 == null || next1.startsWith('"(') || prev2 === CONST)) {
             eI[2] = ['a', { href: '#' + name }, name]
           }

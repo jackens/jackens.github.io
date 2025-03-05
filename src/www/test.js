@@ -6,7 +6,10 @@ import {
   fixTypography,
   h,
   hasOwn,
-  is,
+  isArray,
+  isNumber,
+  isRecord,
+  isString,
   jsOnParse,
   locale,
   nanolightJs,
@@ -384,67 +387,31 @@ test('hasOwn:', () => {
 })
 
 test('is:', () => {
-  expect(is(Number, 42)).to.be.true
-  expect(is(Number, Number(42))).to.be.true
+  expect(isArray([])).to.be.true
+
+  expect(isNumber(42)).to.be.true
+  expect(isNumber(Number(42))).to.be.true
   // eslint-disable-next-line no-new-wrappers
-  expect(is(Number, new Number(42))).to.be.true
-  expect(is(Number, NaN)).to.be.true
+  expect(isNumber(new Number(42))).to.be.false
+  expect(isNumber(NaN)).to.be.true
 
-  expect(is(String, '42')).to.be.true
-  expect(is(String, String('42'))).to.be.true
+  expect(isRecord({})).to.be.true
+  expect(isRecord([])).to.be.false
+  expect(isRecord(Object.create(null))).to.be.true
+  expect(isRecord(Object.create({ constructor: Number }))).to.be.true
+  expect(isRecord(Object.create({ [Symbol.toStringTag]: Number.name }))).to.be.true
   // eslint-disable-next-line no-new-wrappers
-  expect(is(String, new String('42'))).to.be.true
-
-  expect(is(Symbol, Symbol('42'))).to.be.true
-  expect(is(Symbol, Object(Symbol('42')))).to.be.true
-
-  expect(is(undefined, undefined)).to.be.true
-  expect(is(undefined, null)).to.be.true
-
-  expect(is(Object, {})).to.be.true
-  expect(is(Array, [])).to.be.true
-  expect(is(RegExp, /42/)).to.be.true
-  expect(is(Date, new Date(42))).to.be.true
-  expect(is(Set, new Set(['42', 42]))).to.be.true
-  expect(is(Map, new Map([[{ j: 42 }, { J: '42' }], [{ c: 42 }, { C: '42' }]]))).to.be.true
-})
-
-test('is: toString.call', () => {
-  const iz = (/** @type {unknown} */ type, /** @type {unknown} */ arg) =>
-    // @ts-expect-error
-    ({}).toString.call(arg).slice(8, -1) === type?.name
+  expect(isRecord(new Number(42))).to.be.true
+  // eslint-disable-next-line no-new-wrappers
+  expect(isRecord(new String('42'))).to.be.true
 
   class FooBar { }
+  expect(isRecord(new FooBar())).to.be.true
 
-  expect(is(FooBar, new FooBar())).to.be.true
-  expect(iz(FooBar, new FooBar())).to.be.false
-
-  expect(is(Object, new FooBar())).to.be.false
-  expect(iz(Object, new FooBar())).to.be.true
-
-  const fakeFooBar = {}
-
-  // @ts-expect-error
-  fakeFooBar[Symbol.toStringTag] = FooBar.name
-
-  expect(is(FooBar, fakeFooBar)).to.be.false
-  expect(iz(FooBar, fakeFooBar)).to.be.true
-
-  expect(is(Object, fakeFooBar)).to.be.true
-  expect(iz(Object, fakeFooBar)).to.be.false
-})
-
-test('is: try to override constructor', () => {
-  const num = 42
-  const str = '42'
-
-  expect(is(Number, num)).to.be.true
-
-  try {
-    num.constructor = str.constructor
-  } catch { /* empty */ }
-
-  expect(is(Number, num)).to.be.true
+  expect(isString('42')).to.be.true
+  expect(isString(String('42'))).to.be.true
+  // eslint-disable-next-line no-new-wrappers
+  expect(isString(new String('42'))).to.be.false
 })
 
 test('jsOnParse:', () => {

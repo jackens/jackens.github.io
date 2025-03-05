@@ -2,7 +2,7 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2025.2.4</code></sub>
+<sub>Version: <code class="version">2025.3.5</code></sub>
 
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
@@ -37,7 +37,7 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 or
 
 ```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.4/nnn.js'
+import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.3.5/nnn.js'
 ```
 
 ## Exports
@@ -54,7 +54,10 @@ import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.2.4/nnn.js'
 - `fixTypography`: A helper that implements typographic corrections specific to Polish typography.
 - `h`: A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style helper for creating and modifying `HTMLElement`s (see also `s`).
 - `hasOwn`: A replacement for the `in` operator (not to be confused with the `for-in` loop) that works properly.
-- `is`: A helper that checks if the given argument is of a certain type.
+- `isArray`: A helper that checks if the given argument is of type `any[]`.
+- `isNumber`: A helper that checks if the given argument is of type `number`.
+- `isRecord`: A helper that checks if the given argument is of type `Partial<Record<PropertyKey, unknown>>`.
+- `isString`: A helper that checks if the given argument is of type `string`.
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
 - `locale`: Language translations helper.
 - `nanolight`: A generic helper for syntax highlighting (see also `nanolightJs`).
@@ -565,85 +568,37 @@ expect(() => 'key' in undefined).to.throw
 expect(hasOwn(undefined, 'key')).to.be.false
 ```
 
-### is
+### isArray
 
 ```ts
-const is: {
-    (type: ArrayConstructor, arg: unknown): arg is Partial<Array<unknown>>;
-    (type: BigIntConstructor, arg: unknown): arg is bigint;
-    (type: BooleanConstructor, arg: unknown): arg is boolean;
-    (type: NumberConstructor, arg: unknown): arg is number;
-    (type: ObjectConstructor, arg: unknown): arg is Partial<Record<PropertyKey, unknown>>;
-    (type: StringConstructor, arg: unknown): arg is string;
-    (type: SymbolConstructor, arg: unknown): arg is symbol;
-    (type: undefined, arg: unknown): arg is undefined | null;
-    <T extends abstract new (...args: Partial<Array<any>>) => unknown>(type: T, arg: unknown): arg is InstanceType<T>;
-};
+const isArray: (arg: any) => arg is any[];
 ```
 
-A helper that checks if the given argument is of a certain type.
+A helper that checks if the given argument is of type `any[]`.
 
-#### Usage Examples
+### isNumber
 
-```js
-expect(is(Number, 42)).to.be.true
-expect(is(Number, Number(42))).to.be.true
-expect(is(Number, new Number(42))).to.be.true
-expect(is(Number, NaN)).to.be.true
-
-expect(is(String, '42')).to.be.true
-expect(is(String, String('42'))).to.be.true
-expect(is(String, new String('42'))).to.be.true
-
-expect(is(Symbol, Symbol('42'))).to.be.true
-expect(is(Symbol, Object(Symbol('42')))).to.be.true
-
-expect(is(undefined, undefined)).to.be.true
-expect(is(undefined, null)).to.be.true
-
-expect(is(Object, {})).to.be.true
-expect(is(Array, [])).to.be.true
-expect(is(RegExp, /42/)).to.be.true
-expect(is(Date, new Date(42))).to.be.true
-expect(is(Set, new Set(['42', 42]))).to.be.true
-expect(is(Map, new Map([[{ j: 42 }, { J: '42' }], [{ c: 42 }, { C: '42' }]]))).to.be.true
+```ts
+const isNumber: (arg: any) => arg is number;
 ```
 
-```js
-const iz = (/** @type {unknown} */ type, /** @type {unknown} */ arg) =>
-  ({}).toString.call(arg).slice(8, -1) === type?.name
+A helper that checks if the given argument is of type `number`.
 
-class FooBar { }
+### isRecord
 
-expect(is(FooBar, new FooBar())).to.be.true
-expect(iz(FooBar, new FooBar())).to.be.false
-
-expect(is(Object, new FooBar())).to.be.false
-expect(iz(Object, new FooBar())).to.be.true
-
-const fakeFooBar = {}
-
-fakeFooBar[Symbol.toStringTag] = FooBar.name
-
-expect(is(FooBar, fakeFooBar)).to.be.false
-expect(iz(FooBar, fakeFooBar)).to.be.true
-
-expect(is(Object, fakeFooBar)).to.be.true
-expect(iz(Object, fakeFooBar)).to.be.false
+```ts
+const isRecord: (arg: any) => arg is Partial<Record<PropertyKey, unknown>>;
 ```
 
-```js
-const num = 42
-const str = '42'
+A helper that checks if the given argument is of type `Partial<Record<PropertyKey, unknown>>`.
 
-expect(is(Number, num)).to.be.true
+### isString
 
-try {
-  num.constructor = str.constructor
-} catch { /* empty */ }
-
-expect(is(Number, num)).to.be.true
+```ts
+const isString: (arg: any) => arg is string;
 ```
+
+A helper that checks if the given argument is of type `string`.
 
 ### jsOnParse
 

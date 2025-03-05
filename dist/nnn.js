@@ -1,5 +1,8 @@
 // src/nnn/is.ts
-var is = (type, arg) => arg?.constructor === type;
+var isArray = Array.isArray;
+var isNumber = (arg) => typeof arg === "number";
+var isRecord = (arg) => typeof arg === "object" && arg != null && !isArray(arg);
+var isString = (arg) => typeof arg === "string";
 
 // src/nnn/c.ts
 var _c = (node, prefix, result, split) => {
@@ -9,7 +12,7 @@ var _c = (node, prefix, result, split) => {
     if (style0 == null || prefix0 == null) {
       continue;
     }
-    if (is(Array, style0)) {
+    if (isArray(style0)) {
       result.push(prefix0, prefix0 !== "" ? "{" : "", style0.join(";"), prefix0 !== "" ? "}" : "");
     } else {
       const todo = [];
@@ -17,7 +20,7 @@ var _c = (node, prefix, result, split) => {
       let attributesPushed = false;
       for (const key in style0) {
         const value = style0[key];
-        if (is(String, value) || is(Number, value)) {
+        if (isString(value) || isNumber(value)) {
           if (!attributesPushed) {
             attributesPushed = true;
             attributes = [];
@@ -77,21 +80,19 @@ var NS = {
 var _h = (namespaceURI) => {
   const createElement = namespaceURI == null ? (tag) => document.createElement(tag) : (tag) => document.createElementNS(namespaceURI, tag);
   const h = (tagOrNode, ...args) => {
-    const node = is(String, tagOrNode) ? createElement(tagOrNode) : tagOrNode;
+    const node = isString(tagOrNode) ? createElement(tagOrNode) : tagOrNode;
     args.forEach((arg) => {
       let child = null;
       if (arg instanceof Node) {
         child = arg;
-      } else if (is(String, arg) || is(Number, arg)) {
-        child = document.createTextNode(arg);
-      } else if (is(Array, arg)) {
+      } else if (isArray(arg)) {
         child = h(...arg);
-      } else if (arg != null) {
+      } else if (isRecord(arg)) {
         for (const name in arg) {
           const value = arg[name];
           if (name[0] === "$") {
             const name1 = name.slice(1);
-            if (is(Object, value)) {
+            if (isRecord(value)) {
               node[name1] = node[name1] ?? {};
               Object.assign(node[name1], value);
             } else {
@@ -108,7 +109,7 @@ var _h = (namespaceURI) => {
                 } else if (value === false) {
                   node.removeAttributeNS(ns, basename);
                 } else {
-                  node.setAttributeNS(ns, basename, is(String, value) ? value : "" + value);
+                  node.setAttributeNS(ns, basename, value);
                 }
               }
             } else {
@@ -117,11 +118,13 @@ var _h = (namespaceURI) => {
               } else if (value === false) {
                 node.removeAttribute(name);
               } else {
-                node.setAttribute(name, is(String, value) ? value : "" + value);
+                node.setAttribute(name, "" + value);
               }
             }
           }
         }
+      } else if (arg != null) {
+        child = document.createTextNode(arg);
       }
       if (child != null) {
         node.appendChild(child);
@@ -170,7 +173,7 @@ var fixTypography = (node) => {
 var hasOwn = (ref, key) => ref != null && Object.hasOwn(ref, key);
 // src/nnn/jsOnParse.ts
 var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
-  if (is(Object, value)) {
+  if (isRecord(value)) {
     let isSecondKey = false;
     for (key in value) {
       if (isSecondKey) {
@@ -180,7 +183,7 @@ var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
     }
     const handler = handlers[key];
     const params = value[key];
-    if (handler instanceof Function && is(Array, params)) {
+    if (handler instanceof Function && isArray(params)) {
       return handler(...params);
     }
   }
@@ -190,7 +193,7 @@ var jsOnParse = (handlers, text) => JSON.parse(text, (key, value) => {
 var locale = (map, defaultVersion) => (text, version = defaultVersion) => {
   const textV = map?.[version]?.[text];
   const textD = map?.[defaultVersion]?.[text];
-  return is(String, textV) ? textV : is(String, textD) ? textD : text;
+  return isString(textV) ? textV : isString(textD) ? textD : text;
 };
 // src/nnn/nanolight.ts
 var nanolight = (pattern, highlighters, code) => {
@@ -249,7 +252,10 @@ export {
   nanolight,
   locale,
   jsOnParse,
-  is,
+  isString,
+  isRecord,
+  isNumber,
+  isArray,
   hasOwn,
   h,
   fixTypography,
