@@ -2,8 +2,6 @@
 
 Jackens’ JavaScript helpers.
 
-<sub>Version: <code class="version">2025.3.5</code></sub>
-
 * [Documentation](https://jackens.github.io/nnn/doc/)
 * [Tests](https://jackens.github.io/nnn/test/)
 * [Chessboard Demo](https://jackens.github.io/nnn/chessboard/)
@@ -32,12 +30,6 @@ or
 
 ```js
 import { «something» } from './node_modules/@jackens/nnn/nnn.js'
-```
-
-or
-
-```js
-import { «something» } from 'https://unpkg.com/@jackens/nnn@2025.3.5/nnn.js'
 ```
 
 ## Exports
