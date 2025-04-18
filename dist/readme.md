@@ -2,11 +2,10 @@
 
 Jackens’ JavaScript helpers.
 
-* [Documentation](https://jackens.github.io/nnn/doc/)
-* [Tests](https://jackens.github.io/nnn/test/)
-* [Chessboard Demo](https://jackens.github.io/nnn/chessboard/)
-* [Gantt Chart Demo](https://jackens.github.io/nnn/gantt/)
-* [Responsive Web Design Demo](https://jackens.github.io/nnn/rwd/)
+* [Documentation](https://jackens.github.io/doc/)
+* [Chessboard Demo](https://jackens.github.io/chessboard/)
+* [Gantt Chart Demo](https://jackens.github.io/gantt/)
+* [Responsive Web Design Demo](https://jackens.github.io/rwd/)
 
 ## Installation
 
@@ -122,7 +121,7 @@ The `root` parameter provides a hierarchical description of CSS rules.
 
 #### Usage Examples
 
-```js
+```ts
 const actual = c({
   a: {
     color: 'red',
@@ -148,7 +147,7 @@ a{
 expect(actual).to.deep.equal(expected)
 ```
 
-```js
+```ts
 const actual = c({
   a: {
     '.b': {
@@ -176,7 +175,7 @@ a.b{
 expect(actual).to.deep.equal(expected)
 ```
 
-```js
+```ts
 const actual = c({
   '@font-face$$1': {
     fontFamily: 'Jackens',
@@ -251,7 +250,7 @@ div.c2{
 expect(actual).to.deep.equal(expected)
 ```
 
-```js
+```ts
 const actual = c({
   a: {
     '.b,.c': {
@@ -274,7 +273,7 @@ a.b.d,a.c.d{
 expect(actual).to.deep.equal(expected)
 ```
 
-```js
+```ts
 const actual = c({
   '.b,.c': {
     margin: 1,
@@ -295,7 +294,7 @@ const expected = `
 expect(actual).to.deep.equal(expected)
 ```
 
-```js
+```ts
 const actual = c({
   '.a,.b': {
     margin: 1,
@@ -342,7 +341,7 @@ Options:
 
 #### Usage Examples
 
-```js
+```ts
 const text = `"aaa
 ""aaa""
 aaa",bbb, "ccc,ccc"
@@ -378,14 +377,14 @@ A generic helper for escaping `values` by given `escapeMap` (in *TemplateStrings
 
 #### Usage Examples
 
-```js
-const /** @type {EscapeMap} */ escapeMap = new Map([
+```ts
+const escapeMap: EscapeMap = new Map([
   [undefined, () => 'NULL'],
-  [Array, (/** @type {Partial<Array<unknown>>} */ values) => escapeValues(escapeMap, values).join(', ')],
-  [Boolean, (/** @type {boolean} */ value) => `b'${+value}'`],
-  [Date, (/** @type {Date} */ value) => `'${value.toISOString().replace(/^(.+)T(.+)\..*$/, '$1 $2')}'`],
-  [Number, (/** @type {number} */ value) => `${value}`],
-  [String, (/** @type {string} */ value) => `'${value.replace(/'/g, "''")}'`]
+  [Array, (values: Partial<Array<unknown>>) => escapeValues(escapeMap, values).join(', ')],
+  [Boolean, (value: boolean) => `b'${+value}'`],
+  [Date, (value: Date) => `'${value.toISOString().replace(/^(.+)T(.+)\..*$/, '$1 $2')}'`],
+  [Number, (value: number) => `${value}`],
+  [String, (value: string) => `'${value.replace(/'/g, "''")}'`]
 ])
 
 const sql = escape.bind(null, escapeMap)
@@ -421,7 +420,7 @@ A helper that implements typographic corrections specific to Polish typography.
 
 #### Usage Examples
 
-```js
+```ts
 const p = h('p', 'Pchnąć w tę łódź jeża lub ośm skrzyń fig (zob. https://pl.wikipedia.org/wiki/Pangram).')
 
 fixTypography(p)
@@ -453,7 +452,7 @@ A lightweight [HyperScript](https://github.com/hyperhype/hyperscript)-style help
 
 #### Usage Examples
 
-```js
+```ts
 const b = h('b')
 
 expect(b.outerHTML).to.deep.equal('<b></b>')
@@ -471,12 +470,12 @@ expect(i.outerHTML).to.deep.equal('<i class="some class">text</i>')
 expect(b.outerHTML).to.deep.equal('<b><i class="some class">text</i></b>')
 ```
 
-```js
+```ts
 expect(h('span', 'text').outerHTML).to.deep.equal('<span>text</span>')
 expect(h('span', { $innerText: 'text' }).outerHTML).to.deep.equal('<span>text</span>')
 ```
 
-```js
+```ts
 expect(h('div', { style: 'margin:0;padding:0' }).outerHTML)
   .to.deep.equal('<div style="margin:0;padding:0"></div>')
 expect(h('div', { $style: 'margin:0;padding:0' }).outerHTML)
@@ -485,7 +484,7 @@ expect(h('div', { $style: { margin: 0, padding: 0 } }).outerHTML)
   .to.deep.equal('<div style="margin: 0px; padding: 0px;"></div>')
 ```
 
-```js
+```ts
 const input1 = h('input', { value: 42 })
 const input2 = h('input', { $value: '42' })
 
@@ -505,7 +504,7 @@ expect(checkbox1.outerHTML).to.deep.equal('<input type="checkbox" checked="">')
 expect(checkbox2.outerHTML).to.deep.equal('<input type="checkbox">')
 ```
 
-```js
+```ts
 const div = h('div')
 
 expect(div.key).to.be.undefined
@@ -529,7 +528,7 @@ A replacement for the `in` operator (not to be confused with the `for-in` loop) 
 
 #### Usage Examples
 
-```js
+```ts
 const obj = { 42: null, null: 'k,e,y', 'k,e,y': 42 }
 
 expect(42 in obj).to.be.true
@@ -614,9 +613,9 @@ handlers['«handlerName»'](...«params»)
 
 #### Usage Examples
 
-```js
+```ts
 const handlers = {
-  $hello: (/** @type {string} */ name) => `Hello ${name}!`,
+  $hello: (name: string) => `Hello ${name}!`,
   $foo: () => 'bar'
 }
 
@@ -669,7 +668,7 @@ Language translations helper.
 
 #### Usage Examples
 
-```js
+```ts
 const _ = locale({
   default: { Password: 'Hasło' },
   button: { Login: 'Zaloguj' }
@@ -707,7 +706,7 @@ A helper for highlighting JavaScript (see also `nanolight`).
 
 #### Usage Examples
 
-```js
+```ts
 const codeJs = 'const answerToLifeTheUniverseAndEverything = 42'
 
 expect(nanolightJs(codeJs)).to.deep.equal([
@@ -731,7 +730,7 @@ A helper that implements TypeScript’s `Omit` utility type (see also `pick`).
 
 #### Usage Examples
 
-```js
+```ts
 const obj = { a: 42, b: '42', c: 17 }
 
 expect(omit(obj, ['c'])).to.deep.equal({ a: 42, b: '42' })
@@ -747,7 +746,7 @@ A helper that implements TypeScript’s `Pick` utility type (see also `omit`).
 
 #### Usage Examples
 
-```js
+```ts
 const obj = { a: 42, b: '42', c: 17 }
 
 expect(pick(obj, ['a', 'b'])).to.deep.equal({ a: 42, b: '42' })
@@ -763,7 +762,7 @@ A helper for choosing the correct singular and plural.
 
 #### Usage Examples
 
-```js
+```ts
 const auto = plUral.bind(null, 'auto', 'auta', 'aut')
 
 expect(auto(0)).to.deep.equal('aut')
@@ -790,7 +789,7 @@ object.
 
 #### Usage Examples
 
-```js
+```ts
 const ref = {}
 
 pro(ref).one.two[3][4] = 1234
@@ -858,7 +857,7 @@ A helper that generates a UUID v1 identifier (with a creation timestamp).
 
 #### Usage Examples
 
-```js
+```ts
 for (let i = 1; i <= 22136; ++i) {
   const uuid = uuid1()
 
@@ -872,12 +871,12 @@ for (let i = 1; i <= 22136; ++i) {
 }
 ```
 
-```js
+```ts
 expect(uuid1(new Date(), '000123456789abc').split('-')[4]).to.deep.equal('123456789abc')
 expect(uuid1(new Date(), '123456789').split('-')[4]).to.deep.equal('000123456789')
 ```
 
-```js
+```ts
 expect(uuid1(new Date(323325000000)).startsWith('c1399400-9a71-11bd')).to.be.true
 ```
 
