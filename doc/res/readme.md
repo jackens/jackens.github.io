@@ -2,11 +2,6 @@
 
 Jackens’ JavaScript helpers.
 
-* [Documentation](https://jackens.github.io/doc/)
-* [Chessboard Demo](https://jackens.github.io/chessboard/)
-* [Gantt Chart Demo](https://jackens.github.io/gantt/)
-* [Responsive Web Design Demo](https://jackens.github.io/rwd/)
-
 ## Installation
 
 ```sh
@@ -50,7 +45,6 @@ import { «something» } from './node_modules/@jackens/nnn/nnn.js'
 - `isRecord`: A helper that checks if the given argument is of type `Partial<Record<PropertyKey, unknown>>`.
 - `isString`: A helper that checks if the given argument is of type `string`.
 - `jsOnParse`: `JSON.parse` with “JavaScript turned on”.
-- `locale`: Language translations helper.
 - `nanolight`: A generic helper for syntax highlighting (see also `nanolightJs`).
 - `nanolightJs`: A helper for highlighting JavaScript (see also `nanolight`).
 - `omit`: A helper that implements TypeScript’s `Omit` utility type (see also `pick`).
@@ -656,36 +650,6 @@ const expected = [
 ]
 
 expect(actual).to.deep.equal(expected)
-```
-
-### locale
-
-```ts
-const locale: (map: Partial<Record<PropertyKey, Partial<Record<PropertyKey, string>>>>, defaultVersion: string) => (text: string, version?: string) => string;
-```
-
-Language translations helper.
-
-#### Usage Examples
-
-```ts
-const _ = locale({
-  default: { Password: 'Hasło' },
-  button: { Login: 'Zaloguj' }
-}, 'default')
-
-expect(_('Login')).to.deep.equal('Login')
-expect(_('Password')).to.deep.equal('Hasło')
-
-expect(_('Undefined text')).to.deep.equal('Undefined text')
-
-expect(_('Login', 'button')).to.deep.equal('Zaloguj')
-
-expect(_('Password', 'undefined_version')).to.deep.equal('Hasło')
-expect(_('Undefined text', 'undefined_version')).to.deep.equal('Undefined text')
-
-expect(_('toString')).to.deep.equal('toString')
-expect(_('toString', 'undefined_version')).to.deep.equal('toString')
 ```
 
 ### nanolight
